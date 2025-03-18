@@ -1,0 +1,9 @@
+apipkg==3.0.2
+asgiref==3.8.1
+Django==3.1.12
+django-cors-headers==4.7.0
+djangorestframework==3.15.2
+dnspython==2.7.0
+pymongo==4.11.3
+pytz==2025.1
+sqlparse==0.2.4

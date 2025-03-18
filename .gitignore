@@ -1,0 +1,9 @@
+404: Not Found
+# React/Vite
+node_modules/
+dist/
+.venv
+
+
+# Python Virtual Env
+venv/
