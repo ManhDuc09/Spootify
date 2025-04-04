@@ -10,6 +10,7 @@ const MainLayout = () => {
                 <SideBar />
                 <main className="flex-1 p-4 ml-64 mt-16 overflow-y-auto">
                     <Outlet />
+                    jdioadasjd
                 </main>
             </div>
         </>
