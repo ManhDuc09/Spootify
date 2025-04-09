@@ -1,34 +1,83 @@
-import { useState } from 'react'
-import reactLogo from "../assets/react.svg"
-import viteLogo from '/vite.svg'
-import "../styles/Home.css"
+
+
+import MusicCard from '../components/MusicCard';
+import MusicPlayer from '../components/MusicPlayer'
 function Home() {
-    const [count, setCount] = useState(0)
+
 
     return (
         <>
-            <div>
-                <a href="https://vite.dev" target="_blank">
-                    <img src={viteLogo} className="logo" alt="Vite logo" />
-                </a>
-                <a href="https://react.dev" target="_blank">
-                    <img src={reactLogo} className="logo react" alt="React logo" />
-                </a>
-            </div>
-            <h1>Vite + React</h1>
-            <div className="card">
-                <button onClick={() => setCount((count) => count + 1)}>
-                    count is {count}
-                </button>
-                <p>
-                    Edit <code>src/App.tsx</code> and save to test HMR
-                </p>
-            </div>
-            <p className="read-the-docs">
-                Click on the Vite and React logos to learn more
-            </p>
+        <div className="p-6">
+            <h1 className="text-2xl font-bold mb-4">Trending Music</h1>
 
+            <div className="flex gap-4 overflow-x-auto pb-4">
+                <MusicCard
+                    title="Blinding Lights"
+                    artist="The Weeknd"
+                    image="https://link-to-album-cover.jpg"
+                />
+                <MusicCard
+                    title="Save Your Tears"
+                    artist="The Weeknd"
+                    image="https://link-to-another-cover.jpg"
+                />
+                <MusicCard
+                    title="In Your Eyes"
+                    artist="The Weeknd"
+                    image="https://yet-another-image.jpg"
+                />
+          
+            </div>
+
+        </div>
+        <div className="p-6">
+            <h1 className="text-2xl font-bold mb-4">Trending Music</h1>
+
+            <div className="flex gap-4 overflow-x-auto pb-4">
+                <MusicCard
+                    title="Blinding Lights"
+                    artist="The Weeknd"
+                    image="https://link-to-album-cover.jpg"
+                />
+                <MusicCard
+                    title="Save Your Tears"
+                    artist="The Weeknd"
+                    image="https://link-to-another-cover.jpg"
+                />
+                <MusicCard
+                    title="In Your Eyes"
+                    artist="The Weeknd"
+                    image="https://yet-another-image.jpg"
+                />
+          
+            </div>
+
+        </div>
+        <div className="p-6">
+            <h1 className="text-2xl font-bold mb-4">Trending Music</h1>
+
+            <div className="flex gap-4 overflow-x-auto pb-4">
+                <MusicCard
+                    title="Blinding Lights"
+                    artist="The Weeknd"
+                    image="https://link-to-album-cover.jpg"
+                />
+                <MusicCard
+                    title="Save Your Tears"
+                    artist="The Weeknd"
+                    image="https://link-to-another-cover.jpg"
+                />
+                <MusicCard
+                    title="In Your Eyes"
+                    artist="The Weeknd"
+                    image="https://yet-another-image.jpg"
+                />
+          
+            </div>
+
+        </div>
         </>
+        
     )
 }
 export default Home;
