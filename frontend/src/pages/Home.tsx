@@ -16,6 +16,26 @@ function Home() {
                     artist="The Weeknd"
                     image="https://link-to-album-cover.jpg"
                 />
+                 <MusicCard
+                    title="Blinding Lights"
+                    artist="The Weeknd"
+                    image="https://link-to-album-cover.jpg"
+                />
+                 <MusicCard
+                    title="Blinding Lights"
+                    artist="The Weeknd"
+                    image="https://link-to-album-cover.jpg"
+                />
+                 <MusicCard
+                    title="Blinding Lights"
+                    artist="The Weeknd"
+                    image="https://link-to-album-cover.jpg"
+                />
+                 <MusicCard
+                    title="Blinding Lights"
+                    artist="The Weeknd"
+                    image="https://link-to-album-cover.jpg"
+                />
                 <MusicCard
                     title="Save Your Tears"
                     artist="The Weeknd"
