@@ -9,3 +9,5 @@ pymongo==4.11.3
 pytz==2025.1
 sqlparse==0.5.3
 typing_extensions==4.12.2
+djangorestframework==3.15.2
+djangorestframework-simplejwt==5.2.2
