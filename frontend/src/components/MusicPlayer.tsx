@@ -1,4 +1,3 @@
-// MusicPlayer.tsx
 import usePlayerStore from '../store/playerStore';
 
 const MusicPlayer = () => {
