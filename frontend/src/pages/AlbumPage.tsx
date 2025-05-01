@@ -9,6 +9,8 @@ interface Track {
   coverUrl: string;
   duration: number;
   currentTime: number;
+  url: string; 
+  isPlaying: boolean; 
 }
 
 interface Album {
@@ -31,6 +33,8 @@ const mockAlbumData = (albumId: string): Album => ({
       coverUrl: `https://via.placeholder.com/150?text=Track+1`,
       duration: 200,
       currentTime: 0,
+      url :"https://some-spotify-clone-bucket.s3.ap-southeast-2.amazonaws.com/Lady+Gaga%2C+Bruno+Mars+-+Die+With+A+Smile+(Official+Music+Video).mp3",
+      isPlaying: false,
     },
     {
       title: `Track 2`,
@@ -39,6 +43,8 @@ const mockAlbumData = (albumId: string): Album => ({
       coverUrl: `https://via.placeholder.com/150?text=Track+2`,
       duration: 180,
       currentTime: 0,
+      url :"https://some-spotify-clone-bucket.s3.ap-southeast-2.amazonaws.com/Lady+Gaga%2C+Bruno+Mars+-+Die+With+A+Smile+(Official+Music+Video).mp3",
+      isPlaying: false,
     },
   ],
 });

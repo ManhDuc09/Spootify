@@ -7,6 +7,8 @@ interface Track {
   coverUrl: string;
   duration: number;
   currentTime: number;
+  url: string; // URL to the audio file
+  isPlaying: boolean; // Track is playing or not
 }
 
 interface Album {
