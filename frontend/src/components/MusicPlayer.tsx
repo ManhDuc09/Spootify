@@ -1,10 +1,11 @@
+import { useEffect, useRef, useState } from 'react';
 import usePlayerStore from '../store/playerStore';
 
 const MusicPlayer = () => {
   const track = usePlayerStore((state) => state.track);
   const album = usePlayerStore((state) => state.album);
-
-  if (!track || !album) return null;
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const formatTime = (secs: number) => {
     const m = Math.floor(secs / 60);
@@ -12,10 +13,23 @@ const MusicPlayer = () => {
     return `${m}:${s < 10 ? '0' : ''}${s}`;
   };
 
-  const progress = (track.currentTime / track.duration) * 100;
+  useEffect(() => {
+    if (audioRef.current && track?.url) {
+      audioRef.current.load();
+      audioRef.current.play()
+    }
+  }, [track?.url]);
+
+  if (!track || !album) return null;
+
 
   return (
     <div className="w-full">
+      <audio ref={audioRef} controls className="hidden">
+        <source src={track.url} type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
+
       <div className="bg-white shadow-lg w-full px-4 py-2">
         <div className="flex items-center">
           <img
@@ -34,25 +48,21 @@ const MusicPlayer = () => {
 
             <div className="flex items-center justify-between mt-2">
               {['⏮', '⏯', '⏭'].map((label, idx) => (
-                <button key={idx} className="text-gray-600 text-lg">
+                <button
+                  key={idx}
+                  className="text-gray-600 text-lg"
+                  onClick={() => {
+                    if (label === '⏯') {
+                      audioRef.current?.play();;
+                    } else {
+                      // ⏮ and ⏭ can be wired for playlist functionality
+                      console.log(`${label} not implemented`);
+                    }
+                  }}
+                >
                   {label}
                 </button>
               ))}
-            </div>
-
-            <div className="mt-2">
-              <div className="flex justify-between text-xs text-gray-500 mb-1">
-                <p>{formatTime(track.currentTime)}</p>
-                <p>{formatTime(track.duration)}</p>
-              </div>
-              <div className="h-1 bg-gray-300 rounded-full relative">
-                <div
-                  className="h-1 bg-red-400 rounded-full"
-                  style={{ width: `${progress}%` }}
-                >
-                  <span className="w-3 h-3 bg-red-400 absolute right-0 -top-1 rounded-full shadow"></span>
-                </div>
-              </div>
             </div>
           </div>
         </div>
