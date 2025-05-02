@@ -1,4 +1,42 @@
+import React, { useState } from "react";
+import { registerUser } from "../api/authService";
+import { AxiosError } from "axios";
+
 const Register = () => {
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (formData.password !== formData.confirmPassword) {
+      alert("Mật khẩu và xác nhận mật khẩu không khớp!");
+      return;
+    }
+
+    try {
+      const response = await registerUser(formData);
+      alert("Đăng ký thành công");
+      console.log(response);
+    } catch (error) {
+      const err = error as AxiosError;
+      console.error(err);
+      const errorData = err.response?.data as { detail?: string };
+      alert("Đăng ký thất bại: " + (errorData?.detail || "Có lỗi xảy ra"));
+    }
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 px-4">
       <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-lg shadow-2xl p-8 space-y-6">
@@ -13,7 +51,7 @@ const Register = () => {
         <h1 className="text-2xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white text-center">
           Sign up to start listening
         </h1>
-        <form className="space-y-6" action="#">
+        <form className="space-y-6" action="#" onSubmit={handleSubmit}>
           <div>
             <label
               htmlFor="email"
@@ -28,6 +66,7 @@ const Register = () => {
               className="w-full p-3 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-green-600 focus:border-green-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               placeholder="name@company.com"
               required
+              onChange={handleChange}
             />
           </div>
           <div>
@@ -44,6 +83,7 @@ const Register = () => {
               placeholder="••••••••"
               className="w-full p-3 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-green-600 focus:border-green-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               required
+              onChange={handleChange}
             />
           </div>
           <div>
@@ -55,11 +95,12 @@ const Register = () => {
             </label>
             <input
               type="password"
-              name="password"
-              id="password"
+              name="confirmPassword"
+              id="confirmPassword"
               placeholder="••••••••"
               className="w-full p-3 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-green-600 focus:border-green-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               required
+              onChange={handleChange}
             />
           </div>
           <button

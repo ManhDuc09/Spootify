@@ -3,7 +3,8 @@ import AlbumPage from "./pages/AlbumPage";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import Register from "./pages/register";
+import Register from "./pages/Register";
+
 function App() {
   return (
     <Router>
