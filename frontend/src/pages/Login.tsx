@@ -1,4 +1,47 @@
+import React, { useState } from "react";
+import { loginUser } from "../api/authService";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      const { username, password } = formData;
+
+      const response = await loginUser({ username, password });
+
+      if (!response?.access || !response?.refresh) {
+        alert("Đăng nhập thành công nhưng không nhận được token.");
+        return;
+      }
+
+      localStorage.setItem("accessToken", response.access);
+      localStorage.setItem("refreshToken", response.refresh);
+
+      console.log("Tokens saved successfully.");
+      navigate("/");
+    } catch (error) {
+      console.error("Lỗi đăng nhập:", error);
+      alert(
+        "Đăng nhập thất bại. Vui lòng kiểm tra lại tài khoản hoặc kết nối mạng."
+      );
+    }
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 px-4">
       <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-lg shadow-2xl p-8 space-y-6">
@@ -13,7 +56,7 @@ const Login = () => {
         <h1 className="text-2xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white text-center">
           Log in to Spootify
         </h1>
-        <form className="space-y-6" action="#">
+        <form className="space-y-6" action="#" onSubmit={handleSubmit}>
           <div>
             <label
               htmlFor="email"
@@ -23,11 +66,12 @@ const Login = () => {
             </label>
             <input
               type="email"
-              name="email"
-              id="email"
+              name="username"
+              id="username"
               className="w-full p-3 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-green-600 focus:border-green-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               placeholder="name@company.com"
               required
+              onChange={handleChange}
             />
           </div>
           <div>
@@ -44,6 +88,7 @@ const Login = () => {
               placeholder="••••••••"
               className="w-full p-3 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-green-600 focus:border-green-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               required
+              onChange={handleChange}
             />
           </div>
           <div className="flex items-center justify-between">

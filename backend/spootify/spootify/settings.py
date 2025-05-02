@@ -142,8 +142,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'music.CustomUser'
 # CORS settings
 CORS_ALLOWED_ORIGINS = [
-     "http://localhost:5174",
+     "http://localhost:5173",
 ]
 CORS_ALLOW_CREDENTIALS = True
+
 
 
