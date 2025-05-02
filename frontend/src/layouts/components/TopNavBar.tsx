@@ -1,6 +1,14 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const TopNavBar = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    setIsLoggedIn(!!token);
+  }, []);
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-10 bg-black border-gray-800">
       <div className="flex flex-wrap items-center justify-start mx-auto p-4 space-x-4">
@@ -15,13 +23,7 @@ const TopNavBar = () => {
           </span>
         </Link>
 
-        <form className="max-w-xs flex-grow mr-4">
-          <label
-            htmlFor="default-search"
-            className="mb-2 text-sm font-medium text-white sr-only"
-          >
-            Search
-          </label>
+        <form className="max-w-xs flex-grow ml-17 mr-5">
           <div className="relative">
             <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
               <svg
@@ -42,7 +44,7 @@ const TopNavBar = () => {
             <input
               type="search"
               id="default-search"
-              className="block w-full p-4 ps-10 text-sm text-white  rounded-full bg-gray-800 focus:ring-blue-500 focus:border-blue-500"
+              className="block w-full p-4 ps-10 text-sm text-white rounded-full bg-gray-800 focus:ring-blue-500 focus:border-blue-500"
               placeholder="Search..."
               required
             />
@@ -56,23 +58,25 @@ const TopNavBar = () => {
         </form>
 
         <div className="hidden w-full md:block md:w-auto ml-auto mr-9">
-          <ul className="font-medium flex flex-col p-4 md:p-0 mt-4  rounded-lg bg-black md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0">
-            <li>
-              <Link
-                to="/login"
-                className="block py-2 px-3 text-white hover:bg-gray-700 md:hover:bg-transparent md:hover:text-blue-500"
-              >
-                Login
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/register"
-                className="block py-2 px-3 text-white hover:bg-gray-700 md:hover:bg-transparent md:hover:text-blue-500"
-              >
-                Register
-              </Link>
-            </li>
+          <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 rounded-lg bg-black md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0">
+            {!isLoggedIn ? (
+              <li>
+                <Link
+                  to="/login"
+                  className="block py-2 px-3 text-white hover:bg-gray-700 md:hover:bg-transparent md:hover:text-blue-500"
+                >
+                  Login
+                </Link>
+              </li>
+            ) : (
+              <li>
+                <img
+                  src="https://some-spotify-clone-bucket.s3.ap-southeast-2.amazonaws.com/guts_over_fear_cover.jpg"
+                  alt="User Avatar"
+                  className="h-10 w-10 rounded-full object-cover"
+                />
+              </li>
+            )}
           </ul>
         </div>
       </div>
