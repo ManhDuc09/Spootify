@@ -1,4 +1,4 @@
-import axios from "../api/CustomAxios";
+import axios from "./CustomAxios";
 
 interface UserData {
   email: string;
@@ -10,8 +10,16 @@ export const registerUser = async (userData: UserData) => {
   return axios.post("register/", userData);
 };
 
-export const loginUser = async (
-  userData: Omit<UserData, "confirmPassword">
-) => {
-  return axios.post("login/", userData);
+interface AuthResponse {
+  access: string;
+  refresh: string;
+}
+
+export const loginUser = async (userData: {
+  username: string;
+  password: string;
+}): Promise<AuthResponse> => {
+  // interceptor đang bóc response.data, và TS cũng hiểu điều đó
+  const data = await axios.post<AuthResponse, AuthResponse>("token/", userData);
+  return data;
 };
