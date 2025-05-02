@@ -37,19 +37,16 @@ def register_view(request):
     API endpoint để đăng ký người dùng mới.
     """
     data = request.data
-    if not data.get('username') or not data.get('password') or not data.get('email'):
-        return Response({"error": "Username, password, and email are required."}, status=status.HTTP_400_BAD_REQUEST)
+    
+    if not data.get('email') or not data.get('password'):
+        return Response({"error": "Email and password are required."}, status=status.HTTP_400_BAD_REQUEST)
 
-    # Kiểm tra xem username hoặc email đã tồn tại chưa
-    if User.objects.filter(username=data['username']).exists():
-        return Response({"error": "Username already exists."}, status=status.HTTP_400_BAD_REQUEST)
     if User.objects.filter(email=data['email']).exists():
         return Response({"error": "Email already exists."}, status=status.HTTP_400_BAD_REQUEST)
 
-    # Tạo người dùng mới
     user = User.objects.create(
-        username=data['username'],
         email=data['email'],
         password=make_password(data['password'])  # Hash mật khẩu
     )
+    
     return Response({"message": "User registered successfully."}, status=status.HTTP_201_CREATED)
