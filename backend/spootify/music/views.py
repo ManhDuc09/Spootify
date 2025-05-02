@@ -45,6 +45,7 @@ def register_view(request):
         return Response({"error": "Email already exists."}, status=status.HTTP_400_BAD_REQUEST)
 
     user = User.objects.create(
+        username=data['email'],
         email=data['email'],
         password=make_password(data['password'])  # Hash mật khẩu
     )
