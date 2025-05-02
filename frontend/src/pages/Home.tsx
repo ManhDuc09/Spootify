@@ -1,7 +1,4 @@
-
-
 import MusicCard from '../components/MusicCard';
-import MusicPlayer from '../components/MusicPlayer'
 function Home() {
 
 
@@ -9,7 +6,6 @@ function Home() {
         <>
         <div className="p-6">
             <h1 className="text-2xl font-bold mb-4">Trending Music</h1>
-
             <div className="flex gap-4 overflow-x-auto pb-4">
                 <MusicCard
                     title="Blinding Lights"

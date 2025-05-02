@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 
 interface Track {
+  id: any;
   title: string;
   artist: string;
   album: string;
@@ -14,6 +15,7 @@ interface Track {
 interface Album {
   title: string;
   coverUrl: string;
+  tracks: Track[];
 }
 
 interface PlayerState {

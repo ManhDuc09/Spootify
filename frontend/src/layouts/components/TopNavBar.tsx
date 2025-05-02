@@ -4,10 +4,7 @@ const TopNavBar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-10 bg-black border-gray-800">
       <div className="flex flex-wrap items-center justify-start mx-auto p-4 space-x-4">
-        <a
-          href="https://flowbite.com/"
-          className="flex items-center space-x-3 rtl:space-x-reverse mr-20"
-        >
+        <Link to="/" className="flex items-center">
           <img
             src="https://storage.googleapis.com/pr-newsroom-wp/1/2023/05/Spotify_Primary_Logo_RGB_Green.png"
             className="h-8 mr-5"
@@ -16,7 +13,7 @@ const TopNavBar = () => {
           <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
             Spootify
           </span>
-        </a>
+        </Link>
 
         <form className="max-w-xs flex-grow mr-4">
           <label
