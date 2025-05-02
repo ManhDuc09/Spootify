@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import usePlayerStore from "../store/playerStore";
 
 interface Track {
+  id: number;
   title: string;
   artist: string;
   album: string;
@@ -27,8 +28,9 @@ const mockAlbumData = (albumId: string): Album => ({
   coverUrl: `https://via.placeholder.com/150?text=Album+${albumId}`,
   tracks: [
     {
-      title: `Track 1`,
-      artist: `Artist ${albumId}`,
+      id: 1,
+      title: `Die with a Smile`,
+      artist: `Bruno Mars ,Lady Gaga`, 
       album: `Album Title ${albumId}`,
       coverUrl: `https://via.placeholder.com/150?text=Track+1`,
       duration: 200,
@@ -37,13 +39,14 @@ const mockAlbumData = (albumId: string): Album => ({
       isPlaying: false,
     },
     {
-      title: `Track 2`,
-      artist: `Artist ${albumId}`,
+      id: 2,
+      title: `Guts Over Fear`,
+      artist: `Eminem , Sia`,
       album: `Album Title ${albumId}`,
-      coverUrl: `https://via.placeholder.com/150?text=Track+2`,
+      coverUrl: `https://some-spotify-clone-bucket.s3.ap-southeast-2.amazonaws.com/guts_over_fear_cover.jpg`,
       duration: 180,
       currentTime: 0,
-      url :"https://some-spotify-clone-bucket.s3.ap-southeast-2.amazonaws.com/Lady+Gaga%2C+Bruno+Mars+-+Die+With+A+Smile+(Official+Music+Video).mp3",
+      url :"https://some-spotify-clone-bucket.s3.ap-southeast-2.amazonaws.com/Eminem+-+Guts+Over+Fear+ft.+Sia+(Lyric+Video).mp3",
       isPlaying: false,
     },
   ],
@@ -107,67 +110,56 @@ const AlbumPage = () => {
 							</button>
 						</div>
 
-						<div className='bg-black/20 backdrop-blur-sm'>
-				
-							<div
-								className='grid grid-cols-[16px_4fr_2fr_1fr] gap-4 px-10 py-2 text-sm 
-            text-zinc-400 border-b border-white/5'
-							>
-								<div>#</div>
-								<div>Title</div>
-								<div>Released Date</div>
-								<div>
-									
-									<span>🕒</span>
-								</div>
-							</div>
+						<div className="bg-black/20 backdrop-blur-sm">
+            <div className="grid grid-cols-[16px_4fr_2fr_1fr_2fr] gap-2 px-10 py-2 text-sm text-zinc-400 border-b border-white/5">
+              <div>#</div>
+              <div>Title</div>
+              <div>Released Date</div>
+              <div>🕒</div>
+              <div className="pl-7">Album</div> 
+            </div>
 
-							<div className='px-6'>
-								<div className='space-y-2 py-4'>
-                {album.tracks.map((track, index) => (
-                        <div
-                          key={index}
-                          className='grid grid-cols-[16px_4fr_2fr_1fr] gap-4 px-4 py-2 text-sm 
-                          text-zinc-400 hover:bg-white/5 rounded-md group cursor-pointer'
-                        >
-                          <div className='flex items-center justify-center'>
-                            <span className='group-hover:hidden'>{index + 1}</span>
-                            <button
-                              className='hidden group-hover:block text-xs'
-                              onClick={() => {
-                                console.log("Setting track:", track);
-                                setTrack(track)
-                                if (album) setCurrentAlbum(album);
-                              }}
-                            >
-                              ▶
-                            </button>
-                          </div>
+            {/* Track Data Rows */}
+            {album.tracks.map((track, index) => (
+              <div
+                key={index}
+                className="grid grid-cols-[16px_4fr_2fr_1fr_2fr] gap-2 px-4 py-2 text-sm text-zinc-400 hover:bg-white/5 rounded-md group cursor-pointer"
+              >
+                <div className="flex items-center justify-center">
+                  <span className="group-hover:hidden">{index + 1}</span>
+                  <button
+                    className="hidden group-hover:block text-xs"
+                    onClick={() => {
+                      console.log("Setting track:", track);
+                      setTrack(track);
+                      if (album) setCurrentAlbum(album);
+                    }}
+                  >
+                    ▶
+                  </button>
+                </div>
 
-                          <div className='flex items-center gap-3'>
-                            <img
-                              src='https://via.placeholder.com/40'
-                              alt={track.title}
-                              className='size-10'
-                            />
-                            <div>
-                              <div className='font-medium text-white'>{track.title}</div>
-                              <div>{album.artist}</div>
-                            </div>
-                          </div>
-                          <div className='flex items-center'>2024-01-01</div>
-                          <div className='flex items-center'>
-                            {Math.floor(track.duration / 60)}:{(track.duration % 60).toString().padStart(2, '0')}
-                          </div>
-                        </div>
-                      ))}
-								</div>
+                <div className="flex items-center gap-3">
+                  <img src={track.coverUrl} alt={track.title} className="size-10" />
+                  <div>
+                    <div className="font-medium text-white">{track.title}</div>
+                    <div>{album.artist}</div>
+                  </div>
+                </div>
+                <div className="flex items-center">2024-01-01</div>
+                <div className="flex items-center">
+                  {Math.floor(track.duration / 60)}:{(track.duration % 60).toString().padStart(2, '0')}
+                </div>
+                <div className="flex items-center pl-4">{album.title}</div> {/* Ensure this is aligned by adding padding */}
+              </div>
+            ))}
+          </div>
+
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>
+		
 	);
 };
 

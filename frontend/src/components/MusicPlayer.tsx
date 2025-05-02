@@ -2,73 +2,140 @@ import { useEffect, useRef, useState } from 'react';
 import usePlayerStore from '../store/playerStore';
 
 const MusicPlayer = () => {
-  const track = usePlayerStore((state) => state.track);
-  const album = usePlayerStore((state) => state.album);
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+	const track = usePlayerStore((state) => state.track);
+	const album = usePlayerStore((state) => state.album);
+	const audioRef = useRef<HTMLAudioElement>(null);
+	const [isPlaying, setIsPlaying] = useState(false);
 
-  const formatTime = (secs: number) => {
-    const m = Math.floor(secs / 60);
-    const s = Math.floor(secs % 60);
-    return `${m}:${s < 10 ? '0' : ''}${s}`;
-  };
+	const formatTime = (secs: number) => {
+		const m = Math.floor(secs / 60);
+		const s = Math.floor(secs % 60);
+		return `${m}:${s < 10 ? '0' : ''}${s}`;
+	};
 
-  useEffect(() => {
-    if (audioRef.current && track?.url) {
-      audioRef.current.load();
-      audioRef.current.play()
-    }
-  }, [track?.url]);
+	useEffect(() => {
+		if (audioRef.current && track?.url) {
+			audioRef.current.load();
+			audioRef.current.play().then(() => {
+				setIsPlaying(true);
+			}).catch(() => {
+				setIsPlaying(false);
+			});
+		}
+	}, [track?.url]);
 
-  if (!track || !album) return null;
+	const handleNextTrack = () => {
+		if (album) {
+			const currentIndex = album.tracks.findIndex((t) => t.id === track?.id);
+			const nextIndex = (currentIndex + 1) % album.tracks.length; 
+			const nextTrack = album.tracks[nextIndex];
+			usePlayerStore.getState().setTrack(nextTrack); 
+		}
+	};
 
+	const handlePreviousTrack = () => {
+		if (album) {
+			const currentIndex = album.tracks.findIndex((t) => t.id === track?.id);
+			const prevIndex = (currentIndex - 1 + album.tracks.length) % album.tracks.length;
+			const prevTrack = album.tracks[prevIndex];
+			usePlayerStore.getState().setTrack(prevTrack); 
+		}
+	};
 
-  return (
-    <div className="w-full">
-      <audio ref={audioRef} controls className="hidden">
-        <source src={track.url} type="audio/mpeg" />
-        Your browser does not support the audio element.
-      </audio>
+	if (!track || !album) return null;
 
-      <div className="bg-white shadow-lg w-full px-4 py-2">
-        <div className="flex items-center">
-          <img
-            className="w-12 h-12 rounded hidden md:block mr-4 object-cover"
-            src={album.coverUrl}
-            alt={album.title}
-          />
+	return (
+		<footer className='h-20 sm:h-24 bg-zinc-900 border-t border-zinc-800 px-4'>
+			<div className='flex justify-between items-center h-full max-w-[1800px] mx-auto'>
+				<audio ref={audioRef} controls className="hidden">
+					<source src={track.url} type="audio/mpeg" />
+					Your browser does not support the audio element.
+				</audio>
 
-          <div className="flex-1">
-            <div className="flex justify-between items-center">
-              <div>
-                <h3 className="text-sm font-semibold text-gray-800">{track.title}</h3>
-                <p className="text-xs text-gray-500">{album.title}</p>
-              </div>
-            </div>
+				<div className='hidden sm:flex items-center gap-4 min-w-[180px] w-[30%]'>
+					<img
+						src='https://via.placeholder.com/56'
+						alt='Song Title'
+						className='w-14 h-14 object-cover rounded-md'
+					/>
+					<div className='flex-1 min-w-0'>
+						<div className='font-medium truncate hover:underline cursor-pointer'>
+							{track.title}
+						</div>
+						<div className='text-sm text-zinc-400 truncate hover:underline cursor-pointer'>
+							{track.artist}
+						</div>
+					</div>
+				</div>
 
-            <div className="flex items-center justify-between mt-2">
-              {['⏮', '⏯', '⏭'].map((label, idx) => (
-                <button
-                  key={idx}
-                  className="text-gray-600 text-lg"
-                  onClick={() => {
-                    if (label === '⏯') {
-                      audioRef.current?.play();;
-                    } else {
-                      // ⏮ and ⏭ can be wired for playlist functionality
-                      console.log(`${label} not implemented`);
-                    }
-                  }}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+				<div className='flex flex-col items-center gap-2 flex-1 max-w-full sm:max-w-[45%]'>
+					<div className='flex items-center gap-4 sm:gap-6'>
+						<button className='hidden sm:inline-flex hover:text-white text-zinc-400'>
+							🎲
+						</button>
+
+						<button
+							className='hover:text-white text-zinc-400'
+							onClick={handlePreviousTrack} // Go to previous track
+						>
+							⏮
+						</button>
+
+						<button
+							className='bg-white hover:bg-white/80 text-black rounded-full h-8 w-8'
+							onClick={() => {
+								const audio = audioRef.current;
+								if (!audio) return;
+
+								if (isPlaying) {
+									audio.pause();
+									setIsPlaying(false);
+								} else {
+									audio.play();
+									setIsPlaying(true);
+								}
+							}}
+						>
+							{isPlaying ? '⏸' : '▶'}
+						</button>
+
+						<button
+							className='hover:text-white text-zinc-400'
+							onClick={handleNextTrack} // Go to next track
+						>
+							⏭
+						</button>
+
+						<button className='hidden sm:inline-flex hover:text-white text-zinc-400'>
+							🔁
+						</button>
+					</div>
+
+					<div className='hidden sm:flex items-center gap-2 w-full'>
+						<div className='text-xs text-zinc-400'>0:00</div>
+						<div className='w-full h-1 bg-zinc-700 rounded hover:cursor-grab active:cursor-grabbing'>
+							{/* Slider Bar Placeholder */}
+							<div className='h-1 bg-white w-1/4 rounded'></div>
+						</div>
+						<div className='text-xs text-zinc-400'>{formatTime(track.duration)}</div>
+					</div>
+				</div>
+
+				<div className='hidden sm:flex items-center gap-4 min-w-[180px] w-[30%] justify-end'>
+					<button className='hover:text-white text-zinc-400'>🎤</button>
+					<button className='hover:text-white text-zinc-400'>🎵</button>
+					<button className='hover:text-white text-zinc-400'>💻</button>
+
+					<div className='flex items-center gap-2'>
+						<button className='hover:text-white text-zinc-400'>🔊</button>
+						<div className='w-24 h-1 bg-zinc-700 rounded hover:cursor-grab active:cursor-grabbing'>
+							<div className='h-1 bg-white w-3/4 rounded'></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+	);
 };
 
 export default MusicPlayer;
