@@ -70,7 +70,7 @@ const TopNavBar = () => {
             </li>
             <li>
               <Link
-                to="/Register"
+                to="/register"
                 className="block py-2 px-3 text-white hover:bg-gray-700 md:hover:bg-transparent md:hover:text-blue-500"
               >
                 Register
