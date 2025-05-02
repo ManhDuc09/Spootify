@@ -61,17 +61,20 @@ const TopNavBar = () => {
         <div className="hidden w-full md:block md:w-auto ml-auto mr-9">
           <ul className="font-medium flex flex-col p-4 md:p-0 mt-4  rounded-lg bg-black md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0">
             <li>
-              <Link to="/login" className="block py-2 px-3 text-white hover:bg-gray-700 md:hover:bg-transparent md:hover:text-blue-500">
-                  Login
+              <Link
+                to="/login"
+                className="block py-2 px-3 text-white hover:bg-gray-700 md:hover:bg-transparent md:hover:text-blue-500"
+              >
+                Login
               </Link>
             </li>
             <li>
-              <a
-                href="#"
+              <Link
+                to="/Register"
                 className="block py-2 px-3 text-white hover:bg-gray-700 md:hover:bg-transparent md:hover:text-blue-500"
               >
-                Sign Up
-              </a>
+                Register
+              </Link>
             </li>
           </ul>
         </div>

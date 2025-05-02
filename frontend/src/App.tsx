@@ -3,6 +3,7 @@ import AlbumPage from "./pages/AlbumPage";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import Register from "./pages/register";
 function App() {
   return (
     <Router>
@@ -12,6 +13,7 @@ function App() {
           <Route path="/album/:albumId" element={<AlbumPage />} />
         </Route>
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </Router>
   );
