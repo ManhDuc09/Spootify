@@ -16,7 +16,7 @@ const mockAlbumData = (albumId: string): Album => ({
       artist: `Bruno Mars ,Lady Gaga`, 
       album: `Album Title ${albumId}`,
       coverUrl: `https://via.placeholder.com/150?text=Track+1`,
-      duration: 200,
+      duration: 252,
       currentTime: 0,
       url :"https://some-spotify-clone-bucket.s3.ap-southeast-2.amazonaws.com/Lady+Gaga%2C+Bruno+Mars+-+Die+With+A+Smile+(Official+Music+Video).mp3",
       isPlaying: false,
