@@ -8,6 +8,8 @@ interface ProgressSliderProps {
 
 const ProgressSlider: React.FC<ProgressSliderProps> = ({ value, max, onChange }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("Slider value changed:", e.target.value);
+    
     onChange(Number(e.target.value));
   };
 
