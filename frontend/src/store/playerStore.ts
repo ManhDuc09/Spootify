@@ -1,22 +1,6 @@
 import { create } from 'zustand';
+import { Track,Album } from '../types';
 
-interface Track {
-  id: any;
-  title: string;
-  artist: string;
-  album: string;
-  coverUrl: string;
-  duration: number;
-  currentTime: number;
-  url: string; // URL to the audio file
-  isPlaying: boolean; // Track is playing or not
-}
-
-interface Album {
-  title: string;
-  coverUrl: string;
-  tracks: Track[];
-}
 
 interface PlayerState {
   track: Track | null;

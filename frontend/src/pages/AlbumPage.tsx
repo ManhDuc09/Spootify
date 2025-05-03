@@ -1,25 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import usePlayerStore from "../store/playerStore";
+import { Track, Album } from "../types";
 
-interface Track {
-  id: number;
-  title: string;
-  artist: string;
-  album: string;
-  coverUrl: string;
-  duration: number;
-  currentTime: number;
-  url: string; 
-  isPlaying: boolean; 
-}
-
-interface Album {
-  title: string;
-  artist: string;
-  coverUrl: string;
-  tracks: Track[];
-}
 
 
 const mockAlbumData = (albumId: string): Album => ({
@@ -57,6 +40,7 @@ const AlbumPage = () => {
   const setCurrentAlbum = usePlayerStore((state) => state.setAlbum);
   const { albumId } = useParams(); 
   const [album, setAlbum] = useState<Album | null>(null);
+  
 
 
   useEffect(() => {

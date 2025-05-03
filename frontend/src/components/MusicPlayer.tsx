@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import usePlayerStore from '../store/playerStore';
+import ProgressSlider from './ProgressSlider';
 
 const MusicPlayer = () => {
 	const track = usePlayerStore((state) => state.track);
 	const album = usePlayerStore((state) => state.album);
 	const audioRef = useRef<HTMLAudioElement>(null);
 	const [isPlaying, setIsPlaying] = useState(false);
+	const [currentTime , setCurrentTime] = useState<number>(0);
 
 	const formatTime = (secs: number) => {
 		const m = Math.floor(secs / 60);
@@ -23,6 +25,24 @@ const MusicPlayer = () => {
 			});
 		}
 	}, [track?.url]);
+	useEffect(() => {
+		const audio = audioRef.current;
+		if (!audio) return;
+	  
+		const updateTime = () => setCurrentTime(audio.currentTime);
+		audio.addEventListener('timeupdate', updateTime);
+	  
+		return () => {
+		  audio.removeEventListener('timeupdate', updateTime);
+		};
+	  }, []);
+	const handleSliderChange = (value: number) => {
+		const audio = audioRef.current;
+		if (audio) {
+		  audio.currentTime = value;
+		  setCurrentTime(value);
+		}
+	};
 
 	const handleNextTrack = () => {
 		if (album) {
@@ -112,13 +132,15 @@ const MusicPlayer = () => {
 					</div>
 
 					<div className='hidden sm:flex items-center gap-2 w-full'>
-						<div className='text-xs text-zinc-400'>0:00</div>
-						<div className='w-full h-1 bg-zinc-700 rounded hover:cursor-grab active:cursor-grabbing'>
-							{/* Slider Bar Placeholder */}
-							<div className='h-1 bg-white w-1/4 rounded'></div>
-						</div>
+						<div className='text-xs text-zinc-400'>{formatTime(currentTime)}</div>
+						<ProgressSlider
+							value={currentTime}
+							max={track.duration}
+							onChange={handleSliderChange}
+						/>
 						<div className='text-xs text-zinc-400'>{formatTime(track.duration)}</div>
 					</div>
+
 				</div>
 
 				<div className='hidden sm:flex items-center gap-4 min-w-[180px] w-[30%] justify-end'>
