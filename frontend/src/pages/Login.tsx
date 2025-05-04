@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { loginUser } from "../api/authService";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 const Login = () => {
   const navigate = useNavigate();
+  const { setIsLoggedIn } = useAuth();
 
   const [formData, setFormData] = useState({
     username: "",
@@ -31,7 +33,7 @@ const Login = () => {
 
       localStorage.setItem("accessToken", response.access);
       localStorage.setItem("refreshToken", response.refresh);
-
+      setIsLoggedIn(true);
       console.log("Tokens saved successfully.");
       navigate("/");
     } catch (error) {
