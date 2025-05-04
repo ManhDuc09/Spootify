@@ -4,19 +4,24 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Register from "./pages/Register";
+import { AuthProvider } from "./contexts/AuthContext";
+import UserProfile from "./pages/UserProfile";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/album/:albumId" element={<AlbumPage />} />
-        </Route>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route element={<MainLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/album/:albumId" element={<AlbumPage />} />
+            <Route path="/user/:userId" element={<UserProfile />} />
+          </Route>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

@@ -1,21 +1,17 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const TopNavBar = () => {
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    setIsLoggedIn(!!token);
-  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     setIsLoggedIn(false);
-    setIsMenuOpen(false); // Đóng menu sau khi logout
+    setIsMenuOpen(false);
     navigate("/");
   };
 
@@ -93,7 +89,7 @@ const TopNavBar = () => {
                   >
                     <li className="rounded-lg">
                       <Link
-                        to="/profile"
+                        to="/user/1"
                         className="block px-4 py-2 text-white hover:bg-neutral-900 rounded-lg"
                         onClick={() => setIsMenuOpen(false)}
                       >
