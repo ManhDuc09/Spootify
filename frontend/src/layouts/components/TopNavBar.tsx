@@ -1,13 +1,23 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const TopNavBar = () => {
+  const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     setIsLoggedIn(!!token);
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    setIsLoggedIn(false);
+    setIsMenuOpen(false); // Đóng menu sau khi logout
+    navigate("/");
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-10 bg-black border-gray-800">
@@ -69,12 +79,37 @@ const TopNavBar = () => {
                 </Link>
               </li>
             ) : (
-              <li>
+              <li className="relative">
                 <img
                   src="https://some-spotify-clone-bucket.s3.ap-southeast-2.amazonaws.com/guts_over_fear_cover.jpg"
                   alt="User Avatar"
-                  className="h-10 w-10 rounded-full object-cover"
+                  className="h-10 w-10 rounded-full object-cover cursor-pointer"
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
                 />
+                {isMenuOpen && (
+                  <ul
+                    className="absolute right-0 mt-2 w-48 rounded-lg shadow-lg"
+                    style={{ backgroundColor: "#242424" }}
+                  >
+                    <li className="rounded-lg">
+                      <Link
+                        to="/profile"
+                        className="block px-4 py-2 text-white hover:bg-neutral-900 rounded-lg"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        Profile
+                      </Link>
+                    </li>
+                    <li className="rounded-lg">
+                      <button
+                        onClick={handleLogout}
+                        className="block w-full text-left px-4 py-2 text-white hover:bg-neutral-900 rounded-lg"
+                      >
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                )}
               </li>
             )}
           </ul>
