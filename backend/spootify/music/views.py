@@ -1,5 +1,9 @@
 from django.shortcuts import render
 from .models import CustomUser as User
+from .models.track import Track
+from .models import Album
+
+from .serializers import TrackSerializer , AlbumSerializer 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
@@ -18,6 +22,28 @@ class RefreshTokenView(TokenRefreshView):
     View for refreshing JWT tokens.
     """
     pass
+
+@api_view(['GET'])
+@permission_classes([AllowAny]) 
+def album_detail_view(request, pk):
+
+
+    try:
+        album = Album.objects.get(pk=pk)
+    except Album.DoesNotExist:
+        return Response({"error": "Album not found"}, status=404)
+
+    serializer = AlbumSerializer(album)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def track_list_view(request):
+    """
+    Returns a list of all tracks.
+    """
+    tracks = Track.objects.all()
+    serializer = TrackSerializer(tracks, many=True)
+    return Response(serializer.data)
 
 @api_view(['POST'])
 def logout_view(request):
