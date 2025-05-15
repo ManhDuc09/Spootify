@@ -1,12 +1,11 @@
 from django.db import models
-from .author import Author
-from .genre import Genre
+from .artist import Artist
 
 class Album(models.Model):
-    title = models.CharField(max_length=255)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='albums')
-    release_date = models.DateField()
-    genre = models.CharField(max_length=50)
+    name = models.CharField(max_length=100)
+    artist = models.ForeignKey(Artist, on_delete=models.CASCADE, null=True, blank=True)
+    release_date = models.DateField(null=True, blank=True)
+    image = models.BinaryField(null=True, blank=True)
 
     def __str__(self):
-        return self.title
+        return self.name
