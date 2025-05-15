@@ -1,11 +1,11 @@
 from django.db import models
-from .playlist import Playlist  
-from .song import Song  
+from .playlist import Playlist
+from .track import Track
 
 class PlaylistSong(models.Model):
     playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE)
-    song = models.ForeignKey(Song, on_delete=models.CASCADE)
-    added_at = models.DateTimeField(auto_now_add=True)
+    track = models.ForeignKey(Track, on_delete=models.CASCADE)
+    order = models.IntegerField(null=True, blank=True)
 
-    def __str__(self):
-        return f'{self.song.title} in {self.playlist.name}'
+    class Meta:
+        unique_together = ('playlist', 'track')
