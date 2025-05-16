@@ -8,7 +8,7 @@ const dataProvider = restProvider('http://localhost:8000/api');
 
 const AdminPanel = () => {
     return (
-        <Admin dataProvider={dataProvider}>
+        <Admin dataProvider={dataProvider} basename="/admin">
             <Resource name="albums" list={AlbumList} />
             <Resource name="tracks" list={TrackList} />
         </Admin>

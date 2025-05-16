@@ -7,7 +7,11 @@ const TrackList = () => (
             <TextField source="name" />
             <FunctionField
                 label="Artist"
-                render={record => record.artist ? record.artist.name : ''}
+                render={record =>
+                    record.artists && record.artists.length > 0
+                        ? record.artists[0].name
+                        : ''
+                }
             />
         </Datagrid>
     </List>
