@@ -22,6 +22,7 @@ class TrackSerializer(serializers.ModelSerializer):
 
 class AlbumSerializer(serializers.ModelSerializer):
     tracks = TrackSerializer(many=True, read_only=True)
+    artist = ArtistSerializer()
 
     class Meta:
         model = Album

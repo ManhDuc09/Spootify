@@ -3,12 +3,16 @@ from .models import CustomUser as User
 from .models.track import Track
 from .models import Album
 
+from .pagination import ReactAdminPagination
+
 from .serializers import TrackSerializer , AlbumSerializer 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.generics import ListAPIView , RetrieveAPIView
+
 from django.contrib.auth.hashers import make_password  # Import make_password
 
 class LoginView(TokenObtainPairView):
@@ -23,27 +27,23 @@ class RefreshTokenView(TokenRefreshView):
     """
     pass
 
-@api_view(['GET'])
-@permission_classes([AllowAny]) 
-def album_detail_view(request, pk):
+class AlbumDetailView(RetrieveAPIView):
+    queryset = Album.objects.all()
+    serializer_class = AlbumSerializer
+    permission_classes = [AllowAny]
+
+class AlbumListView(ListAPIView):
+    queryset = Album.objects.all()
+    serializer_class = AlbumSerializer
+    permission_classes = [AllowAny]
+    pagination_class = ReactAdminPagination
 
 
-    try:
-        album = Album.objects.get(pk=pk)
-    except Album.DoesNotExist:
-        return Response({"error": "Album not found"}, status=404)
-
-    serializer = AlbumSerializer(album)
-    return Response(serializer.data)
-
-@api_view(['GET'])
-def track_list_view(request):
-    """
-    Returns a list of all tracks.
-    """
-    tracks = Track.objects.all()
-    serializer = TrackSerializer(tracks, many=True)
-    return Response(serializer.data)
+class TrackListView(ListAPIView):
+    queryset = Track.objects.all()
+    serializer_class = TrackSerializer
+    permission_classes = [AllowAny]
+    pagination_class = ReactAdminPagination
 
 @api_view(['POST'])
 def logout_view(request):

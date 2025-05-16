@@ -76,7 +76,7 @@ const AlbumPage = () => {
                 <p className='text-sm font-medium'>Album</p>
                 <h1 className='text-7xl font-bold my-4'>{album.name}</h1>
                 <div className='flex items-center gap-2 text-sm text-zinc-100'>
-                  <span className='font-medium text-white'>{album.artist}</span>
+                  <span className='font-medium text-white'>{album.artist.name}</span>
                   <span>• {album.tracks.length} songs</span>
                   <span>• 2024</span>
                 </div>
