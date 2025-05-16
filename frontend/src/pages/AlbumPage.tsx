@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import usePlayerStore from "../store/playerStore";
 import { Track, Album } from "../types";
+import axios from "axios";
 
 
 
@@ -18,9 +19,8 @@ const AlbumPage = () => {
   useEffect(() => {
     const fetchAlbum = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/albums/${albumId}/`);
-        if (!response.ok) throw new Error("Failed to fetch album");
-        const data = await response.json();
+        const response = await axios.get(`http://localhost:8000/api/albums/${albumId}/`);
+        const data = response.data
         const transformed = {
           name: data.name,
           artist: data.artist,
@@ -37,9 +37,6 @@ const AlbumPage = () => {
             isPlaying: false,
           })),
         };
-        console.log("Fetched album data:", transformed);
-        console.log("data:", data)
-
         setAlbum(transformed);
       } catch (err) {
         console.error("Error loading album:", err);
