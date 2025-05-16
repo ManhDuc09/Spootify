@@ -97,6 +97,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10,
 }
 
 # Password validation
@@ -149,3 +151,9 @@ CORS_ALLOW_CREDENTIALS = True
 
 
 
+from corsheaders.defaults import default_headers
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'range',
+]
+CORS_EXPOSE_HEADERS = ['Content-Range']

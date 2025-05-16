@@ -20,7 +20,7 @@ class Command(BaseCommand):
             audio_url="https://some-spotify-clone-bucket.s3.ap-southeast-2.amazonaws.com/Lady+Gaga%2C+Bruno+Mars+-+Die+With+A+Smile+(Official+Music+Video).mp3"
         )
         if created:
-            track1.artists.add(artist)  # add single or multiple artists here
+            track1.artists.add(artist)  
 
         track2, created = Track.objects.get_or_create(
             name="Guts Over Fear",
@@ -29,6 +29,15 @@ class Command(BaseCommand):
             audio_url="https://some-spotify-clone-bucket.s3.ap-southeast-2.amazonaws.com/Eminem+-+Guts+Over+Fear+ft.+Sia+(Lyric+Video).mp3"
         )
         if created:
-            track2.artists.add(artist1, artist_sia)
+            track3.artists.add(artist1, artist_sia)
+
+        track3, created = Track.objects.get_or_create(
+            name="That's what i like",
+            album=album1,
+            duration=177,
+            audio_url="https://some-spotify-clone-bucket.s3.ap-southeast-2.amazonaws.com/Bruno+Mars+-+Thats+What+I+Like+%5BOfficial+Music+Video%5D.mp3"
+        )
+        if created:
+            track3.artists.add(artist)
 
         self.stdout.write(self.style.SUCCESS('✅ Seeded music data successfully'))

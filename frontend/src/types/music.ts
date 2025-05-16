@@ -12,7 +12,10 @@ export interface Track {
 
 export interface Album {
   name: string;
-  artist: string;
+  artist: {
+    name: string;
+    id: number;
+  }
   coverUrl: string;
   tracks: Track[];
 }
