@@ -1,8 +1,8 @@
 import { Admin, Resource } from 'react-admin';
 import restProvider from 'ra-data-simple-rest';
 
-import AlbumList from '../resources/AlbumList';
-import TrackList from '../resources/TrackList';
+import AlbumList from '../components/admin/album/AlbumList';
+import TrackList from '../components/admin/track/TrackList';
 
 const dataProvider = restProvider('http://localhost:8000/api');
 
