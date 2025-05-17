@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react';
 import MusicCard from '../components/MusicCard';
-import axios from 'axios';
+
+import { fetchAllAlbums } from '../api/albumService';
+import { Album } from '../types';
 
 function Home() {
-    const [albums, setAlbum] = useState([]);
+    const [albums, setAlbum] = useState<Album[]>([]);
+
     useEffect(() => {
         const fetchAlbum = async () => {
-            try {
-                const respone = await axios.get('http://localhost:8000/api/albums/')
-                setAlbum(respone.data)
-            }
-            catch (error) {
-                console.error('Error fetching albums', error)
+             try {
+                const data = await fetchAllAlbums();
+                setAlbum(data);
+            } catch (error) {
+                console.error("Error loading albums:", error);
             }
         };
         fetchAlbum();

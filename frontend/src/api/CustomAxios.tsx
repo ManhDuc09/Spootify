@@ -13,4 +13,7 @@ instance.interceptors.response.use(
   }
 );
 
-export default instance;
+export default instance as unknown as {
+  get<T = any>(url: string, config?: any): Promise<T>;
+ 
+};
