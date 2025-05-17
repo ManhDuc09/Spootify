@@ -11,7 +11,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.generics import ListAPIView , RetrieveAPIView , RetrieveUpdateAPIView
+from rest_framework.generics import ListAPIView , RetrieveAPIView , RetrieveUpdateAPIView , DestroyAPIView , ListCreateAPIView
 
 from django.contrib.auth.hashers import make_password  # Import make_password
 
@@ -32,28 +32,39 @@ class AlbumDetailView(RetrieveAPIView):
     serializer_class = AlbumSerializer
     permission_classes = [AllowAny]
 
-class AlbumListView(ListAPIView):
-    queryset = Album.objects.all()
-    serializer_class = AlbumSerializer
-    permission_classes = [AllowAny]
-    pagination_class = ReactAdminPagination
-
-
 
 class AlbumDetailView(RetrieveUpdateAPIView):
     queryset = Album.objects.all()
     serializer_class = AlbumSerializer
     permission_classes = [AllowAny]
+
+class AlbumListView(ListCreateAPIView):
+    queryset = Album.objects.all()
+    serializer_class = AlbumSerializer
+    permission_classes = [AllowAny]
+    pagination_class = ReactAdminPagination
+
+    
+class AlbumDeleteView(DestroyAPIView):
+    queryset = Album.objects.all()
+    serializer_class = AlbumSerializer
+    permission_classes = [AllowAny]
+
+
+
 class TrackListView(ListAPIView):
     queryset = Track.objects.all()
     serializer_class = TrackSerializer
     permission_classes = [AllowAny]
     pagination_class = ReactAdminPagination
+
 class ArtistListView(ListAPIView):
     queryset = Artist.objects.all()
     serializer_class = ArtistSerializer
     permission_classes = [AllowAny]
     pagination_class = ReactAdminPagination
+
+
 @api_view(['POST'])
 def logout_view(request):
     """
