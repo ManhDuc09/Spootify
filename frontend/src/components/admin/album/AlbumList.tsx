@@ -5,10 +5,9 @@ const AlbumList = () => (
         <Datagrid rowClick="edit">
             <TextField source="id" />
             <TextField source="name" />
-            <FunctionField
-                label="Artist"
-                render={record => record.artist ? record.artist.name : ''}
-            />
+            <ReferenceField source="artist" reference="artists">
+                <TextField source="name" />
+            </ReferenceField>
         </Datagrid>
     </List>
 );

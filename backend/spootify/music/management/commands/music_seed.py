@@ -29,7 +29,7 @@ class Command(BaseCommand):
             audio_url="https://some-spotify-clone-bucket.s3.ap-southeast-2.amazonaws.com/Eminem+-+Guts+Over+Fear+ft.+Sia+(Lyric+Video).mp3"
         )
         if created:
-            track3.artists.add(artist1, artist_sia)
+            track2.artists.add(artist1, artist_sia)
 
         track3, created = Track.objects.get_or_create(
             name="That's what i like",
