@@ -13,6 +13,7 @@ instance.interceptors.response.use(
   }
 );
 
+<<<<<<< HEAD
 instance.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken");
   if (token) {
@@ -22,3 +23,9 @@ instance.interceptors.request.use((config) => {
 });
 
 export default instance;
+=======
+export default instance as unknown as {
+  get<T = any>(url: string, config?: any): Promise<T>;
+ 
+};
+>>>>>>> c57ee05d12a0eb888eb729aa9f64e82f810973c1

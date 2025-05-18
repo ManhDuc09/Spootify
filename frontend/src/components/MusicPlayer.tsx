@@ -28,8 +28,8 @@ const MusicPlayer = () => {
 
   useEffect(() => {
 	const interval = setInterval(() => {
-		if (audioRef.current) {                   // Check if audio element is available
-		  setCurrentTime(audioRef.current.currentTime);  // Update the state with current playback time
+		if (audioRef.current) {                   
+		  setCurrentTime(audioRef.current.currentTime); 
 		}
 	  }, 1000)
 	return () => clearInterval(interval);
@@ -67,6 +67,25 @@ const MusicPlayer = () => {
       usePlayerStore.getState().setTrack(nextTrack);
     }
   };
+  const handleDownload = async () => {
+    try {
+      const response = await fetch(track.url);
+      if (!response.ok) throw new Error('Network response was not ok');
+
+      const blob = await response.blob();
+
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${track?.name}.mp3`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Download failed', error);
+    }
+  };
 
   const handlePreviousTrack = () => {
     if (album) {
@@ -95,7 +114,7 @@ const MusicPlayer = () => {
           />
           <div className="flex-1 min-w-0">
             <div className="font-medium truncate hover:underline cursor-pointer">
-              {track.title}
+              {track.name}
             </div>
             <div className="text-sm text-zinc-400 truncate hover:underline cursor-pointer">
               {track.artist}
@@ -161,7 +180,12 @@ const MusicPlayer = () => {
           <button className="hover:text-white text-zinc-400">🎤</button>
           <button className="hover:text-white text-zinc-400">🎵</button>
           <button className="hover:text-white text-zinc-400">💻</button>
-
+           <button
+            className="hover:text-white text-zinc-400"
+            onClick={handleDownload}
+          >
+            ⬇️ 
+          </button>   
           <div className="flex items-center gap-2">
             <button className="hover:text-white text-zinc-400">🔊</button>
             <div className="w-24 h-1 bg-zinc-700 rounded hover:cursor-grab active:cursor-grabbing">

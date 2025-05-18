@@ -1,20 +1,28 @@
 from django.shortcuts import render
 from .models import CustomUser as User
 from .models.track import Track
-from .models import Album
+from .models import Album , Artist
 
 from .pagination import ReactAdminPagination
 
+<<<<<<< HEAD
 from .serializers import TrackSerializer , AlbumSerializer , UserInfoSerializer
+=======
+from .serializers import TrackSerializer , AlbumSerializer , ArtistSerializer
+>>>>>>> c57ee05d12a0eb888eb729aa9f64e82f810973c1
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
+<<<<<<< HEAD
 from rest_framework.generics import ListAPIView , RetrieveAPIView
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 
+=======
+from rest_framework.generics import ListAPIView , RetrieveAPIView , RetrieveUpdateAPIView , DestroyAPIView , ListCreateAPIView
+>>>>>>> c57ee05d12a0eb888eb729aa9f64e82f810973c1
 
 from django.contrib.auth.hashers import make_password  # Import make_password
 
@@ -30,16 +38,25 @@ class RefreshTokenView(TokenRefreshView):
     """
     pass
 
-class AlbumDetailView(RetrieveAPIView):
+
+
+class AlbumDetailView(RetrieveUpdateAPIView):
     queryset = Album.objects.all()
     serializer_class = AlbumSerializer
     permission_classes = [AllowAny]
 
-class AlbumListView(ListAPIView):
+class AlbumListView(ListCreateAPIView):
     queryset = Album.objects.all()
     serializer_class = AlbumSerializer
     permission_classes = [AllowAny]
     pagination_class = ReactAdminPagination
+
+    
+class AlbumDeleteView(DestroyAPIView):
+    queryset = Album.objects.all()
+    serializer_class = AlbumSerializer
+    permission_classes = [AllowAny]
+
 
 
 class TrackListView(ListAPIView):
@@ -48,12 +65,21 @@ class TrackListView(ListAPIView):
     permission_classes = [AllowAny]
     pagination_class = ReactAdminPagination
 
+<<<<<<< HEAD
 class CurrentUserView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         serializer = UserInfoSerializer(request.user)
         return Response(serializer.data)
+=======
+class ArtistListView(ListAPIView):
+    queryset = Artist.objects.all()
+    serializer_class = ArtistSerializer
+    permission_classes = [AllowAny]
+    pagination_class = ReactAdminPagination
+
+>>>>>>> c57ee05d12a0eb888eb729aa9f64e82f810973c1
 
 @api_view(['POST'])
 def logout_view(request):
