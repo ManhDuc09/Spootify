@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import usePlayerStore from "../store/playerStore";
 import { Track, Album } from "../types";
 
+import { fetchAlbumById } from "../api/albumService";
+
 
 
 
@@ -16,40 +18,17 @@ const AlbumPage = () => {
 
 
   useEffect(() => {
-    const fetchAlbum = async () => {
-      try {
-        const response = await fetch(`http://localhost:8000/api/albums/${albumId}/`);
-        if (!response.ok) throw new Error("Failed to fetch album");
-        const data = await response.json();
-        const transformed = {
-          name: data.name,
-          artist: data.artist,
-          coverUrl: data.cover_url,
-          tracks: data.tracks.map((t: any) => ({
-            id: t.id,
-            name: t.name,
-            artist: t.artist,
-            album: data.title,
-            coverUrl: t.cover_url,
-            duration: t.duration,
-            currentTime: 0,
-            url: t.audio_url,
-            isPlaying: false,
-          })),
-        };
-        console.log("Fetched album data:", transformed);
-        console.log("data:", data)
-
-        setAlbum(transformed);
-      } catch (err) {
-        console.error("Error loading album:", err);
-      }
-    };
-
-    if (albumId) {
-      fetchAlbum();
+  const fetchAlbum = async () => {
+    try {
+      const albumData = await fetchAlbumById(albumId as string);
+      setAlbum(albumData);
+    } catch (err) {
+      console.error("Error loading album:", err);
     }
-  }, [albumId]);
+  };
+
+  if (albumId) fetchAlbum();
+}, [albumId]);
 
   if (!album) return <div>Loading...</div>;
 
