@@ -3,8 +3,11 @@ from django.db import models
 
 class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
-    date_of_birth = models.DateField(null=True, blank=True)
-    profile_image = models.BinaryField(null=True, blank=True)
-
+    role = models.CharField(
+        max_length=10,
+        choices=[('admin', 'Admin'), ('user', 'User'), ('mod', 'Mod')],
+        default='user'
+    )
+    
     def __str__(self):
         return self.username

@@ -19,7 +19,26 @@ export const loginUser = async (userData: {
   username: string;
   password: string;
 }): Promise<AuthResponse> => {
-  // interceptor đang bóc response.data, và TS cũng hiểu điều đó
   const data = await axios.post<AuthResponse, AuthResponse>("token/", userData);
   return data;
+};
+
+export interface UserInfo {
+  id: string;
+  username: string;
+  email: string;
+  role: string;
+}
+
+export const getUserInfo = async (): Promise<UserInfo | null> => {
+  try {
+    const user = (await axios.get("me/")) as UserInfo;
+    return user;
+  } catch (error: any) {
+    console.error(
+      "Lỗi khi lấy thông tin người dùng:",
+      error?.response?.data || error
+    );
+    return null;
+  }
 };
