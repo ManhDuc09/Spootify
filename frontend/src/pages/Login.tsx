@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { loginUser } from "../api/authService";
+import { getUserInfo, loginUser } from "../api/authService";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 const Login = () => {
   const navigate = useNavigate();
-  const { setIsLoggedIn } = useAuth();
+  const { setIsLoggedIn, setUser } = useAuth();
 
   const [formData, setFormData] = useState({
     username: "",
@@ -25,6 +25,7 @@ const Login = () => {
       const { username, password } = formData;
 
       const response = await loginUser({ username, password });
+      console.log("Login response:", response);
 
       if (!response?.access || !response?.refresh) {
         alert("Đăng nhập thành công nhưng không nhận được token.");
@@ -33,6 +34,19 @@ const Login = () => {
 
       localStorage.setItem("accessToken", response.access);
       localStorage.setItem("refreshToken", response.refresh);
+      alert(localStorage.getItem("accessToken"));
+
+      const user = await getUserInfo();
+      console.log("User info:", user);
+
+      if (user) {
+        localStorage.setItem("user", JSON.stringify(user));
+        setUser(user);
+      } else {
+        alert("Lỗi lấy thông tin người dùng.");
+        return;
+      }
+
       setIsLoggedIn(true);
       console.log("Tokens saved successfully.");
       navigate("/");

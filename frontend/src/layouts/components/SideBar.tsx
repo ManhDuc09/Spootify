@@ -70,7 +70,7 @@ const SideBar = () => {
                         <div className="flex justify-end space-x-2">
                           <button
                             className="text-xs font-semibold"
-                            onClick={() => setIsPopupOpen(false)} // Đóng popup
+                            onClick={() => setIsPopupOpen(false)} 
                           >
                             Not now
                           </button>

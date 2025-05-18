@@ -5,13 +5,16 @@ from .models import Album
 
 from .pagination import ReactAdminPagination
 
-from .serializers import TrackSerializer , AlbumSerializer 
+from .serializers import TrackSerializer , AlbumSerializer , UserInfoSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.generics import ListAPIView , RetrieveAPIView
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+
 
 from django.contrib.auth.hashers import make_password  # Import make_password
 
@@ -45,13 +48,17 @@ class TrackListView(ListAPIView):
     permission_classes = [AllowAny]
     pagination_class = ReactAdminPagination
 
+class CurrentUserView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        serializer = UserInfoSerializer(request.user)
+        return Response(serializer.data)
+
 @api_view(['POST'])
 def logout_view(request):
-    """
-    View for user logout.
-    """
     try:
-        request.auth.delete()  # Xóa token
+        request.auth.delete()
         return Response({"message": "Logged out successfully"}, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -59,9 +66,6 @@ def logout_view(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register_view(request):
-    """
-    API endpoint để đăng ký người dùng mới.
-    """
     data = request.data
     
     if not data.get('email') or not data.get('password'):
