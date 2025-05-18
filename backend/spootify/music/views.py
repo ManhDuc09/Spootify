@@ -5,24 +5,18 @@ from .models import Album , Artist
 
 from .pagination import ReactAdminPagination
 
-<<<<<<< HEAD
 from .serializers import TrackSerializer , AlbumSerializer , UserInfoSerializer
-=======
 from .serializers import TrackSerializer , AlbumSerializer , ArtistSerializer
->>>>>>> c57ee05d12a0eb888eb729aa9f64e82f810973c1
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
-<<<<<<< HEAD
 from rest_framework.generics import ListAPIView , RetrieveAPIView
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 
-=======
 from rest_framework.generics import ListAPIView , RetrieveAPIView , RetrieveUpdateAPIView , DestroyAPIView , ListCreateAPIView
->>>>>>> c57ee05d12a0eb888eb729aa9f64e82f810973c1
 
 from django.contrib.auth.hashers import make_password  # Import make_password
 
