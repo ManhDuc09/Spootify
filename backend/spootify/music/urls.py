@@ -1,9 +1,6 @@
 from django.urls import path , include
-<<<<<<< HEAD
 from .views import LoginView, RefreshTokenView, logout_view, register_view ,  AlbumListView , TrackListView , AlbumDetailView , CurrentUserView
-=======
 from .views import LoginView, RefreshTokenView, logout_view, register_view ,  AlbumListView , TrackListView , AlbumDetailView , ArtistListView
->>>>>>> c57ee05d12a0eb888eb729aa9f64e82f810973c1
 
 urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
@@ -14,9 +11,6 @@ urlpatterns = [
     path('tracks/', TrackListView.as_view(), name='track-list'),
     path('albums/<int:pk>/', AlbumDetailView.as_view()),
     path('albums/',AlbumListView.as_view()),
-<<<<<<< HEAD
     path('me/', CurrentUserView.as_view(), name='current-user'),
-=======
     path('artists/', ArtistListView.as_view()),
->>>>>>> c57ee05d12a0eb888eb729aa9f64e82f810973c1
 ]

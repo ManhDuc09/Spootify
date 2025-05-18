@@ -26,7 +26,6 @@ class AlbumSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Album
-<<<<<<< HEAD
         fields = ['id', 'name', 'artist', 'image', 'tracks']
 
 
@@ -34,6 +33,4 @@ class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['id', 'username', 'email', 'role']
-=======
-        fields = ['id', 'name', 'artist', 'image', 'tracks']
->>>>>>> c57ee05d12a0eb888eb729aa9f64e82f810973c1
+

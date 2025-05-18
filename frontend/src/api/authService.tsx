@@ -15,14 +15,10 @@ interface AuthResponse {
   refresh: string;
 }
 
-export const loginUser = async (userData: {
+export const loginUser = (userData: {
   username: string;
   password: string;
-}): Promise<AuthResponse> => {
-  const data = await axios.post<AuthResponse, AuthResponse>("token/", userData);
-  return data;
-};
-
+}): Promise<AuthResponse> => axios.post<AuthResponse>("token/", userData);
 export interface UserInfo {
   id: string;
   username: string;
