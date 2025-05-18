@@ -7,6 +7,7 @@ const AlbumCreate = () => (
             <ReferenceInput source="artist" reference="artists">
                 <SelectInput optionText="name" />
             </ReferenceInput>
+            
         </SimpleForm>
     </Create>
 );

@@ -1,4 +1,4 @@
-import { List, Datagrid, TextField, ReferenceField, FunctionField } from 'react-admin';
+import { List, Datagrid, TextField, FunctionField, ReferenceInput, SelectInput, ReferenceField } from 'react-admin';
 
 const AlbumList = () => (
     <List>
@@ -8,6 +8,7 @@ const AlbumList = () => (
             <ReferenceField source="artist" reference="artists">
                 <TextField source="name" />
             </ReferenceField>
+        
         </Datagrid>
     </List>
 );
