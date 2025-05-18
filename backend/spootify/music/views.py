@@ -27,10 +27,6 @@ class RefreshTokenView(TokenRefreshView):
     """
     pass
 
-class AlbumDetailView(RetrieveAPIView):
-    queryset = Album.objects.all()
-    serializer_class = AlbumSerializer
-    permission_classes = [AllowAny]
 
 
 class AlbumDetailView(RetrieveUpdateAPIView):

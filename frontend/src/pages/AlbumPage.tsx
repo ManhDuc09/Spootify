@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import usePlayerStore from "../store/playerStore";
 import { Track, Album } from "../types";
-import axios from "axios";
+
 import { fetchAlbumById } from "../api/albumService";
 
 
