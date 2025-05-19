@@ -1,4 +1,5 @@
-import axios from "./CustomAxios";
+import { authInstance as axios } from "./CustomAxios";
+
 
 export interface Playlist {
   id: number;
