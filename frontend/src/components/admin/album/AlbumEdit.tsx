@@ -52,9 +52,10 @@ const AlbumEdit = () => {
       <SimpleForm>
         <TextInput source="id" disabled />
         <TextInput source="name" fullWidth />
-        <ReferenceInput source="artist" reference="artists">
-          <SelectInput optionText="name" />
+        <ReferenceInput source="artist_id" reference="artists">
+            <SelectInput optionText="name" />
         </ReferenceInput>
+
         <DateInput source="release_date" />
 
         <ImageInput

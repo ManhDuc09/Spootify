@@ -4,7 +4,7 @@ type MusicCardProps = {
   title: string;
   artist: string;
   image: string;
-  albumId: string; // Assuming you want to pass album ID for routing
+  albumId: string; 
 };
 
 const MusicCard = ({ title, artist, image, albumId }: MusicCardProps) => {

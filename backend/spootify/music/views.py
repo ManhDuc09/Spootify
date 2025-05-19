@@ -60,7 +60,11 @@ class AlbumDeleteView(DestroyAPIView):
     permission_classes = [AllowAny]
 
 
-
+class TrackDetailView(RetrieveUpdateAPIView):
+    queryset = Track.objects.all()
+    serializer_class = TrackSerializer
+    permission_classes = [AllowAny]
+    pagination_class = ReactAdminPagination
 class TrackListView(ListAPIView):
     queryset = Track.objects.all()
     serializer_class = TrackSerializer
