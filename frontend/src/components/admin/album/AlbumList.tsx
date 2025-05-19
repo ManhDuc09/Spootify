@@ -1,5 +1,6 @@
 import { List, Datagrid, TextField, FunctionField, ReferenceInput, SelectInput, ReferenceField } from 'react-admin';
 
+
 const AlbumList = () => (
     <List>
         <Datagrid rowClick="edit">
@@ -8,7 +9,10 @@ const AlbumList = () => (
             <ReferenceField source="artist" reference="artists">
                 <TextField source="name" />
             </ReferenceField>
-        
+            <FunctionField
+                label="Tracks Count"
+                render={record => record?.tracks ? record.tracks.length : 0}
+            />
         </Datagrid>
     </List>
 );

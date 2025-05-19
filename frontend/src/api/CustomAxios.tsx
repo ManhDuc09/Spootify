@@ -15,13 +15,18 @@ instance.interceptors.response.use(
 
 instance.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken");
+
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
+  } else {
+    
+    delete config.headers.Authorization;
   }
+
   return config;
 });
 
 export default instance as unknown as {
   get<T = any>(url: string, config?: any): Promise<T>;
-  post<T = any>(url: string, data?: any, config?: any): Promise<T>;
+  post<T = any>(url: string, data?: any, config?: any): Promise<T>; 
 };

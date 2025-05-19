@@ -59,21 +59,20 @@ class TrackListView(ListAPIView):
     permission_classes = [AllowAny]
     pagination_class = ReactAdminPagination
 
-<<<<<<< HEAD
+
 class CurrentUserView(APIView):
     permission_classes = [IsAuthenticated]
-
     def get(self, request):
         serializer = UserInfoSerializer(request.user)
         return Response(serializer.data)
-=======
+
 class ArtistListView(ListAPIView):
     queryset = Artist.objects.all()
     serializer_class = ArtistSerializer
     permission_classes = [AllowAny]
     pagination_class = ReactAdminPagination
 
->>>>>>> c57ee05d12a0eb888eb729aa9f64e82f810973c1
+
 
 @api_view(['POST'])
 def logout_view(request):
