@@ -45,10 +45,6 @@ class AlbumDetailView(RetrieveUpdateAPIView):
     queryset = Album.objects.all()
     serializer_class = AlbumSerializer
     permission_classes = [AllowAny]
-<<<<<<< HEAD
-=======
-    
->>>>>>> 82b2c8f04459e3acd47e68461b98cf7fa192c180
 
 class AlbumListView(ListCreateAPIView):
     queryset = Album.objects.all()

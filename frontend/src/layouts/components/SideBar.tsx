@@ -1,5 +1,4 @@
 import { useAuth } from "../../contexts/AuthContext";
-<<<<<<< HEAD
 import { useState, useEffect } from "react";
 import {
   getAllPlaylists,
@@ -53,16 +52,6 @@ const SideBar = () => {
   return (
     <>
       {/* Sidebar */}
-=======
-import { useState } from "react";
-
-const SideBar = () => {
-  const { isLoggedIn } = useAuth();
-  const [isPopupOpen, setIsPopupOpen] = useState(false); // Trạng thái hiển thị popup
-
-  return (
-    <>
->>>>>>> 82b2c8f04459e3acd47e68461b98cf7fa192c180
       <aside
         id="default-sidebar"
         className="fixed top-21 left-0 z-40 w-75 h-screen transition-transform -translate-x-full sm:translate-x-0"
@@ -90,8 +79,32 @@ const SideBar = () => {
               </a>
             </li>
 
-<<<<<<< HEAD
-            {/* Nếu chưa có playlist thì hiển thị block tạo playlist */}
+            {/* Nút "Create Playlist" khi đã có playlist */}
+            {isLoggedIn && playlists.length > 0 && (
+              <li>
+                <button
+                  className="w-full text-left flex items-center p-2 text-white bg-black rounded-lg hover:bg-gray-900"
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  <svg
+                    className="w-5 h-5 text-white mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 4v16m8-8H4"
+                    />
+                  </svg>
+                  <span>Create new playlist</span>
+                </button>
+              </li>
+            )}
+
+            {/* Nếu chưa có playlist thì hiển thị block khuyến khích tạo */}
             {playlists.length === 0 ? (
               <li>
                 <div className="p-3 mt-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-black dark:text-white">
@@ -151,17 +164,14 @@ const SideBar = () => {
                 </div>
               </li>
             ) : (
-              // load playlist
+              // Danh sách playlist
               playlists.map((playlist) => (
                 <li key={playlist.id} className="mb-5">
                   <a
                     href={`/playlist/${playlist.id}`}
                     className="flex items-center space-x-3 text-gray-900 dark:text-white hover:text-blue-500"
                   >
-                    {/* Icon âm nhạc nhỏ bên trái */}
                     <span className="text-xl">🎵</span>
-
-                    {/* Tên playlist */}
                     <span>{playlist.name}</span>
                   </a>
                 </li>
@@ -171,7 +181,7 @@ const SideBar = () => {
         </div>
       </aside>
 
-      {/* Modal: NÊN ĐẶT Ở ĐÂY — ngoài aside */}
+      {/* Modal: Đặt ngoài aside */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/10">
           <div
@@ -199,11 +209,7 @@ const SideBar = () => {
               </button>
               <button
                 className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
-                onClick={() => {
-                  handleCreatePlaylist();
-                  setIsModalOpen(false);
-                  setPlaylistName(""); // clear input sau khi tạo
-                }}
+                onClick={handleCreatePlaylist}
               >
                 Create
               </button>
@@ -211,64 +217,6 @@ const SideBar = () => {
           </div>
         </div>
       )}
-=======
-            {/* Create Playlist Block */}
-            <li>
-              <div className="p-3 mt-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-black dark:text-white">
-                <h4 className="text-sm font-bold mb-1">
-                  Create your first playlist
-                </h4>
-                <p className="text-xs mb-2">It's easy, we'll help you</p>
-
-                {isLoggedIn ? (
-                  <button
-                    className="px-3 py-1 text-sm font-semibold text-white bg-black rounded-full hover:bg-gray-900"
-                    onClick={() => console.log("Tạo Playlist")}
-                  >
-                    Create playlist
-                  </button>
-                ) : (
-                  <div className="relative">
-                    <button
-                      className="px-3 py-1 text-sm font-semibold text-white bg-black rounded-full hover:bg-gray-900"
-                      onClick={() => setIsPopupOpen(!isPopupOpen)} // Toggle popup
-                    >
-                      Create playlist
-                    </button>
-
-                    {/* Hiển thị popup nếu isPopupOpen === true */}
-                    {isPopupOpen && (
-                      <div className="absolute left-1/2 top-full mt-1 transform -translate-x-1/2 w-60 p-3 text-sm text-black bg-blue-400 rounded shadow-lg z-50">
-                        <strong className="block mb-1">
-                          Create a playlist
-                        </strong>
-                        <p className="text-xs mb-2">
-                          Log in to create and share playlists.
-                        </p>
-                        <div className="flex justify-end space-x-2">
-                          <button
-                            className="text-xs font-semibold"
-                            onClick={() => setIsPopupOpen(false)} 
-                          >
-                            Not now
-                          </button>
-                          <a
-                            className="px-2 py-1 text-xs font-semibold bg-black text-white rounded-full"
-                            href="/login"
-                          >
-                            Log in
-                          </a>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            </li>
-          </ul>
-        </div>
-      </aside>
->>>>>>> 82b2c8f04459e3acd47e68461b98cf7fa192c180
     </>
   );
 };

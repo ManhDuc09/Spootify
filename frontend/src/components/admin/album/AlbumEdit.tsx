@@ -1,20 +1,3 @@
-<<<<<<< HEAD
-import { Edit, SimpleForm, TextInput, ReferenceInput, SelectInput } from 'react-admin';
-
-const AlbumEdit = () => (
-    <Edit>
-        <SimpleForm>
-            <TextInput source="id" disabled />
-            <TextInput source="name" />
-            <ReferenceInput source="artist" reference="artists">
-                <SelectInput optionText="name" />
-            </ReferenceInput>
-        </SimpleForm>
-    </Edit>
-);
-
-export default AlbumEdit;
-=======
 import {
   Edit,
   SimpleForm,
@@ -96,4 +79,3 @@ const AlbumEdit = () => {
 };
 
 export default AlbumEdit;
->>>>>>> 82b2c8f04459e3acd47e68461b98cf7fa192c180
