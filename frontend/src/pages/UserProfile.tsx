@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from "react";
 import { getAllPlaylists } from "../api/playlistService";
 
@@ -63,6 +64,24 @@ const UserProfile = () => {
     fetchPlaylists();
   }, []);
 
+=======
+import { useParams } from "react-router-dom";
+import React from "react";
+
+const UserProfile = () => {
+  const user = {
+    name: "Lê",
+    avatar: "", // nếu có link avatar thì để ở đây
+    playlists: [
+      {
+        id: 1,
+        name: "My Playlist #1",
+        image: "", // nếu có ảnh playlist thì để ở đây
+        owner: "Lê",
+      },
+    ],
+  };
+>>>>>>> 82b2c8f04459e3acd47e68461b98cf7fa192c180
   return (
     <div className="w-full text-white">
       {/* Header */}
@@ -94,7 +113,11 @@ const UserProfile = () => {
           <p className="uppercase text-sm font-semibold">Profile</p>
           <h1 className="text-5xl font-bold">{user.name}</h1>
           <p className="mt-2 text-sm text-gray-300">
+<<<<<<< HEAD
             {playlists.length} Public Playlist
+=======
+            {user.playlists.length} Public Playlist
+>>>>>>> 82b2c8f04459e3acd47e68461b98cf7fa192c180
           </p>
         </div>
       </div>
@@ -103,7 +126,11 @@ const UserProfile = () => {
       <div className="px-8 py-6">
         <h2 className="text-xl font-semibold mb-4">Public Playlists</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+<<<<<<< HEAD
           {playlists.map((playlist) => (
+=======
+          {user.playlists.map((playlist) => (
+>>>>>>> 82b2c8f04459e3acd47e68461b98cf7fa192c180
             <div
               key={playlist.id}
               className="bg-neutral-900 p-4 rounded-lg hover:bg-neutral-800 transition"

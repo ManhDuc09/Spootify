@@ -1,4 +1,5 @@
 import { useAuth } from "../../contexts/AuthContext";
+<<<<<<< HEAD
 import { useState, useEffect } from "react";
 import {
   getAllPlaylists,
@@ -52,6 +53,16 @@ const SideBar = () => {
   return (
     <>
       {/* Sidebar */}
+=======
+import { useState } from "react";
+
+const SideBar = () => {
+  const { isLoggedIn } = useAuth();
+  const [isPopupOpen, setIsPopupOpen] = useState(false); // Trạng thái hiển thị popup
+
+  return (
+    <>
+>>>>>>> 82b2c8f04459e3acd47e68461b98cf7fa192c180
       <aside
         id="default-sidebar"
         className="fixed top-21 left-0 z-40 w-75 h-screen transition-transform -translate-x-full sm:translate-x-0"
@@ -79,6 +90,7 @@ const SideBar = () => {
               </a>
             </li>
 
+<<<<<<< HEAD
             {/* Nếu chưa có playlist thì hiển thị block tạo playlist */}
             {playlists.length === 0 ? (
               <li>
@@ -199,6 +211,64 @@ const SideBar = () => {
           </div>
         </div>
       )}
+=======
+            {/* Create Playlist Block */}
+            <li>
+              <div className="p-3 mt-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-black dark:text-white">
+                <h4 className="text-sm font-bold mb-1">
+                  Create your first playlist
+                </h4>
+                <p className="text-xs mb-2">It's easy, we'll help you</p>
+
+                {isLoggedIn ? (
+                  <button
+                    className="px-3 py-1 text-sm font-semibold text-white bg-black rounded-full hover:bg-gray-900"
+                    onClick={() => console.log("Tạo Playlist")}
+                  >
+                    Create playlist
+                  </button>
+                ) : (
+                  <div className="relative">
+                    <button
+                      className="px-3 py-1 text-sm font-semibold text-white bg-black rounded-full hover:bg-gray-900"
+                      onClick={() => setIsPopupOpen(!isPopupOpen)} // Toggle popup
+                    >
+                      Create playlist
+                    </button>
+
+                    {/* Hiển thị popup nếu isPopupOpen === true */}
+                    {isPopupOpen && (
+                      <div className="absolute left-1/2 top-full mt-1 transform -translate-x-1/2 w-60 p-3 text-sm text-black bg-blue-400 rounded shadow-lg z-50">
+                        <strong className="block mb-1">
+                          Create a playlist
+                        </strong>
+                        <p className="text-xs mb-2">
+                          Log in to create and share playlists.
+                        </p>
+                        <div className="flex justify-end space-x-2">
+                          <button
+                            className="text-xs font-semibold"
+                            onClick={() => setIsPopupOpen(false)} 
+                          >
+                            Not now
+                          </button>
+                          <a
+                            className="px-2 py-1 text-xs font-semibold bg-black text-white rounded-full"
+                            href="/login"
+                          >
+                            Log in
+                          </a>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </li>
+          </ul>
+        </div>
+      </aside>
+>>>>>>> 82b2c8f04459e3acd47e68461b98cf7fa192c180
     </>
   );
 };

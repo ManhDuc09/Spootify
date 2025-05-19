@@ -1,20 +1,27 @@
 from django.shortcuts import render
 from .models import CustomUser as User
 from .models.track import Track
-from .models import Album , Artist , Playlist
+from .models import Album , Artist, Playlist
 
 from .pagination import ReactAdminPagination
+import boto3
+from django.conf import settings
+import uuid
+from rest_framework.parsers import MultiPartParser
+from urllib.parse import quote
 
 from .serializers import TrackSerializer , AlbumSerializer , UserInfoSerializer
 from .serializers import TrackSerializer , AlbumSerializer , ArtistSerializer , PlaylistSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes , parser_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.generics import ListAPIView , RetrieveAPIView
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from rest_framework.generics import ListAPIView , RetrieveAPIView , RetrieveUpdateAPIView , DestroyAPIView , ListCreateAPIView
 
@@ -38,6 +45,10 @@ class AlbumDetailView(RetrieveUpdateAPIView):
     queryset = Album.objects.all()
     serializer_class = AlbumSerializer
     permission_classes = [AllowAny]
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 82b2c8f04459e3acd47e68461b98cf7fa192c180
 
 class AlbumListView(ListCreateAPIView):
     queryset = Album.objects.all()
@@ -52,7 +63,11 @@ class AlbumDeleteView(DestroyAPIView):
     permission_classes = [AllowAny]
 
 
-
+class TrackDetailView(RetrieveUpdateAPIView):
+    queryset = Track.objects.all()
+    serializer_class = TrackSerializer
+    permission_classes = [AllowAny]
+    pagination_class = ReactAdminPagination
 class TrackListView(ListAPIView):
     queryset = Track.objects.all()
     serializer_class = TrackSerializer
@@ -65,7 +80,6 @@ class CurrentUserView(APIView):
     def get(self, request):
         serializer = UserInfoSerializer(request.user)
         return Response(serializer.data)
-
 
 class ArtistListView(ListAPIView):
     queryset = Artist.objects.all()
@@ -112,3 +126,30 @@ def register_view(request):
     )
     
     return Response({"message": "User registered successfully."}, status=status.HTTP_201_CREATED)
+
+
+
+class UploadImageView(APIView):
+    parser_classes = [MultiPartParser, FormParser]
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        image_file = request.FILES.get("file")
+
+        if not image_file:
+            return Response({"error": "No file provided."}, status=400)
+
+        s3 = boto3.client(
+            "s3",
+            aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+            region_name=settings.AWS_S3_REGION_NAME,
+        )
+
+        unique_name = f"album_covers/{uuid.uuid4()}_{image_file.name}"
+        s3.upload_fileobj(image_file, settings.AWS_S3_BUCKET_NAME, unique_name)
+
+        encoded_key = quote(unique_name, safe='')
+        file_url = f"https://{settings.AWS_S3_BUCKET_NAME}.s3.{settings.AWS_S3_REGION_NAME}.amazonaws.com/{encoded_key}"
+
+        return Response({"url": file_url})

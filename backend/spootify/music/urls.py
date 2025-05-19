@@ -1,6 +1,6 @@
 from django.urls import path , include
 
-from .views import LoginView, RefreshTokenView, logout_view, register_view ,  AlbumListView , TrackListView , AlbumDetailView , ArtistListView , CurrentUserView, PlaylistView
+from .views import LoginView, RefreshTokenView, logout_view, register_view ,  AlbumListView , TrackListView , AlbumDetailView , ArtistListView , CurrentUserView , UploadImageView , TrackDetailView ,  PlaylistView
 
 urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
@@ -14,4 +14,6 @@ urlpatterns = [
     path('me/', CurrentUserView.as_view(), name='current-user'),
     path('artists/', ArtistListView.as_view()),
     path('playlists/', PlaylistView.as_view(), name='playlist-create'),
+    path('upload-image/',UploadImageView.as_view() ),
+    path('tracks/<int:pk>/', TrackDetailView.as_view(), name='track-detail'),
 ]
