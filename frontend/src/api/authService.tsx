@@ -1,4 +1,5 @@
-import axios from "./CustomAxios";
+import { authInstance as axios } from "./CustomAxios";
+import { AxiosResponse } from "axios";
 
 interface UserData {
   email: string;
@@ -18,7 +19,8 @@ interface AuthResponse {
 export const loginUser = (userData: {
   username: string;
   password: string;
-}): Promise<AuthResponse> => axios.post<AuthResponse>("token/", userData);
+}): Promise<AxiosResponse<AuthResponse>> =>
+  axios.post<AuthResponse>("token/", userData);
 export interface UserInfo {
   id: string;
   username: string;
