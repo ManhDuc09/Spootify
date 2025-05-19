@@ -1,19 +1,68 @@
-import { useParams } from "react-router-dom";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getAllPlaylists } from "../api/playlistService";
+
+interface Playlist {
+  id: number;
+  name: string;
+  image?: string;
+  owner: string;
+}
+
+interface User {
+  name: string;
+  avatar?: string;
+}
 
 const UserProfile = () => {
-  const user = {
-    name: "Lê",
-    avatar: "", // nếu có link avatar thì để ở đây
-    playlists: [
-      {
-        id: 1,
-        name: "My Playlist #1",
-        image: "", // nếu có ảnh playlist thì để ở đây
-        owner: "Lê",
-      },
-    ],
+  const storedUser = localStorage.getItem("user");
+  let username = "User";
+
+  if (storedUser) {
+    try {
+      const userObj = JSON.parse(storedUser);
+      username = userObj.username || "User";
+    } catch (error) {
+      console.error("Error parsing user from localStorage:", error);
+    }
+  }
+
+  const user: User = {
+    name: username,
+    avatar:
+      localStorage.getItem("userAvatar") ||
+      "https://cdn.pixabay.com/photo/2021/04/16/09/32/cow-6183083_1280.jpg",
   };
+
+  const [playlists, setPlaylists] = useState<Playlist[]>([]);
+
+  useEffect(() => {
+    const fetchPlaylists = async () => {
+      try {
+        let data = await getAllPlaylists();
+
+        // Nếu backend trả về playlist mà không có ảnh, mình sẽ gán ảnh mẫu cho mỗi playlist để đẹp hơn
+        data = data.map((playlist, index) => ({
+          ...playlist,
+          image:
+            playlist.image ||
+            [
+              "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=400&q=80",
+              "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
+              "https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?auto=format&fit=crop&w=400&q=80",
+              "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=400&q=80",
+              "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=400&q=80",
+            ][index % 5], // chọn 1 trong 5 ảnh mẫu theo index
+        }));
+
+        setPlaylists(data);
+      } catch (error) {
+        console.error("Không lấy được playlist", error);
+      }
+    };
+
+    fetchPlaylists();
+  }, []);
+
   return (
     <div className="w-full text-white">
       {/* Header */}
@@ -45,7 +94,7 @@ const UserProfile = () => {
           <p className="uppercase text-sm font-semibold">Profile</p>
           <h1 className="text-5xl font-bold">{user.name}</h1>
           <p className="mt-2 text-sm text-gray-300">
-            {user.playlists.length} Public Playlist
+            {playlists.length} Public Playlist
           </p>
         </div>
       </div>
@@ -54,7 +103,7 @@ const UserProfile = () => {
       <div className="px-8 py-6">
         <h2 className="text-xl font-semibold mb-4">Public Playlists</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
-          {user.playlists.map((playlist) => (
+          {playlists.map((playlist) => (
             <div
               key={playlist.id}
               className="bg-neutral-900 p-4 rounded-lg hover:bg-neutral-800 transition"

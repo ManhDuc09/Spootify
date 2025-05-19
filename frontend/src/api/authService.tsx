@@ -21,6 +21,8 @@ export const loginUser = (userData: {
   password: string;
 }): Promise<AxiosResponse<AuthResponse>> =>
   axios.post<AuthResponse>("token/", userData);
+
+  
 export interface UserInfo {
   id: string;
   username: string;
