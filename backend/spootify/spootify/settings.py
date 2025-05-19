@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -101,6 +103,13 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10,
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # token sống 60 phút
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),     # refresh token sống 7 ngày
+    'ROTATE_REFRESH_TOKENS': True,                   # Có thể xoay refresh token (tuỳ chọn)
+    'BLACKLIST_AFTER_ROTATION': True,                # Đưa refresh token cũ vào blacklist (tuỳ chọn)
 }
 
 # Password validation

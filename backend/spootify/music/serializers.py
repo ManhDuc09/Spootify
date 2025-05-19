@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Track, Artist, Album , CustomUser
+from .models import Track, Artist, Album , CustomUser , Playlist
 
 class ArtistSerializer(serializers.ModelSerializer):
     class Meta:
@@ -33,4 +33,10 @@ class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['id', 'username', 'email', 'role']
+
+
+class PlaylistSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Playlist
+        fields = ['id', 'name', 'user']
 

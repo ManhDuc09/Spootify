@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from .models import CustomUser as User
 from .models.track import Track
-from .models import Album , Artist
+from .models import Album , Artist , Playlist
 
 from .pagination import ReactAdminPagination
 
 from .serializers import TrackSerializer , AlbumSerializer , UserInfoSerializer
-from .serializers import TrackSerializer , AlbumSerializer , ArtistSerializer
+from .serializers import TrackSerializer , AlbumSerializer , ArtistSerializer , PlaylistSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
@@ -66,11 +66,23 @@ class CurrentUserView(APIView):
         serializer = UserInfoSerializer(request.user)
         return Response(serializer.data)
 
+
 class ArtistListView(ListAPIView):
     queryset = Artist.objects.all()
     serializer_class = ArtistSerializer
     permission_classes = [AllowAny]
     pagination_class = ReactAdminPagination
+
+
+class PlaylistView(ListCreateAPIView):
+    serializer_class = PlaylistSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Playlist.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 
