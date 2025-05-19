@@ -13,8 +13,8 @@ class Track(models.Model):
         related_name='tracks'
     )
     duration = models.PositiveIntegerField()
-    audio_url = models.URLField()
-    cover_url = models.URLField(null=True, blank=True)
+    audio_url = models.URLField(max_length=1000)
+    cover_url = models.URLField(null=True, blank=True , max_length=1000)
     
     def __str__(self):
         return self.name

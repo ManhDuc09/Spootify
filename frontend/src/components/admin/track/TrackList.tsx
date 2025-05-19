@@ -5,7 +5,7 @@ const TrackList = () => (
         <Datagrid rowClick="edit">
             <TextField source="id" />
             <TextField source="name" />
-            <ReferenceArrayField label="Artists" reference="artists" source="artists">
+            <ReferenceArrayField label="Artists" reference="artists" source="artist_ids">
                 <SingleFieldList>
                     <ChipField source="name" />
                 </SingleFieldList>

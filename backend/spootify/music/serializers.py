@@ -13,7 +13,13 @@ class AlbumSummarySerializer(serializers.ModelSerializer):
 
 class TrackSerializer(serializers.ModelSerializer):
     artists = ArtistSerializer(many=True, read_only=True)
-    albums = AlbumSummarySerializer(many=True, read_only=True) 
+    album = AlbumSummarySerializer(read_only=True)
+    album_id = serializers.PrimaryKeyRelatedField(
+        queryset=Album.objects.all(),
+        source='album',
+        required=True, 
+        write_only=False,  
+    )
     artist_ids = serializers.PrimaryKeyRelatedField(
         queryset=Artist.objects.all(),
         many=True,
@@ -22,7 +28,7 @@ class TrackSerializer(serializers.ModelSerializer):
     )
     class Meta:
         model = Track
-        fields = ['id', 'name', 'artists', 'albums', 'duration', 'audio_url', 'cover_url' , 'artist_ids']
+        fields = ['id', 'name', 'artists', 'album', 'duration', 'audio_url', 'cover_url' , 'artist_ids' , 'album_id']
 
 class AlbumSerializer(serializers.ModelSerializer):
     tracks = TrackSerializer(many=True, read_only=True)
