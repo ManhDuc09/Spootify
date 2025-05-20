@@ -8,9 +8,8 @@ import { AuthProvider } from "./contexts/AuthContext";
 import UserProfile from "./pages/UserProfile";
 import AdminPanel from "./pages/Admin";
 import ChatPage from "./pages/ChatPage";
-import AdminPanel from './pages/Admin';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import ArtistPage from "./components/ArtistPage";
 
 function App() {
@@ -31,7 +30,7 @@ function App() {
           <Route path="/register" element={<Register />} />
         </Routes>
       </Router>
-       <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer position="top-right" autoClose={3000} />
     </AuthProvider>
   );
 }

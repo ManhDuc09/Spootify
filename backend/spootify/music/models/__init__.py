@@ -5,3 +5,4 @@ from .playlistsong import PlaylistSong
 from .playlist import Playlist
 from .album import Album
 from .artist import Artist
+from .chatmessage import ChatMessage

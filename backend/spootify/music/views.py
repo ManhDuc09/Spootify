@@ -1,7 +1,11 @@
 from django.shortcuts import render
 from .models import CustomUser as User
 from .models.track import Track
-from .models import Album , Artist, Playlist
+from .models import Album , Artist, Playlist 
+from .models import ChatMessage
+from django.db.models import Q
+from music.models import ChatMessage
+
 
 from .pagination import ReactAdminPagination
 import boto3
@@ -137,6 +141,21 @@ def register_view(request):
     
     return Response({"message": "User registered successfully."}, status=status.HTTP_201_CREATED)
 
+@api_view(['GET'])
+def get_chat_history(request):
+    from_id = request.GET.get('from')
+    to_id = request.GET.get('to')
+
+    messages = ChatMessage.objects.filter(
+        Q(from_user_id=from_id, to_user_id=to_id) |
+        Q(from_user_id=to_id, to_user_id=from_id)
+    ).order_by('timestamp')
+
+    data = [
+        {"from": m.from_user.id, "to": m.to_user.id, "message": m.message}
+        for m in messages
+    ]
+    return Response(data)
 
 
 class UploadImageView(APIView):
@@ -163,3 +182,5 @@ class UploadImageView(APIView):
         file_url = f"https://{settings.AWS_S3_BUCKET_NAME}.s3.{settings.AWS_S3_REGION_NAME}.amazonaws.com/{encoded_key}"
 
         return Response({"url": file_url})
+
+

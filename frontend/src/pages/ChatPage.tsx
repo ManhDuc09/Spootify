@@ -1,13 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 import { getAllUser, User } from "../api/UserService";
 import { useAuth } from "../contexts/AuthContext";
+import { getChatHistory } from "../api/ChatService";
 
 const ChatPage = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [messages, setMessages] = useState<
-    { from: number; to: number; message: string }[]
-  >([{ from: 1, to: 0, message: "Hello from Alice!" }]);
+  const [messageHistory, setMessageHistory] = useState<{
+    [userId: number]: { from: number; to: number; message: string }[];
+  }>({});
+
   const [inputText, setInputText] = useState("");
   const { user } = useAuth();
 
@@ -26,11 +28,9 @@ const ChatPage = () => {
   }, []);
 
   useEffect(() => {
-    if (!selectedUser) return;
+    if (!user?.id) return;
 
-    socket.current = new WebSocket(
-      `ws://localhost:8000/ws/chat/${selectedUser.id}/`
-    );
+    socket.current = new WebSocket(`ws://localhost:8000/ws/chat/${user.id}/`);
 
     socket.current.onopen = () => {
       console.log("WebSocket connected");
@@ -38,7 +38,23 @@ const ChatPage = () => {
 
     socket.current.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      setMessages((prev) => [...prev, data]);
+      if (
+        data &&
+        typeof data === "object" &&
+        "from" in data &&
+        "to" in data &&
+        "message" in data
+      ) {
+        const otherUserId =
+          Number(data.from) === Number(user?.id) ? data.to : data.from;
+
+        setMessageHistory((prev) => ({
+          ...prev,
+          [otherUserId]: [...(prev[otherUserId] || []), data],
+        }));
+      } else {
+        console.warn("Invalid message format received:", data);
+      }
     };
 
     socket.current.onclose = () => {
@@ -48,25 +64,38 @@ const ChatPage = () => {
     return () => {
       socket.current?.close();
     };
-  }, [selectedUser]);
+  }, [user?.id]);
 
-  const handleUserSelect = (user: User) => {
-    setSelectedUser(user);
-    setMessages([]);
+  const handleUserSelect = async (selected: User) => {
+    setSelectedUser(selected);
+
+    if (messageHistory[selected.id]) return;
+
+    try {
+      const history = await getChatHistory(Number(user?.id), selected.id);
+      setMessageHistory((prev) => ({
+        ...prev,
+        [selected.id]: history,
+      }));
+    } catch (error) {
+      console.error("Failed to fetch chat history", error);
+    }
   };
 
   const handleSend = () => {
     if (!inputText.trim() || !selectedUser || !socket.current) return;
 
     const newMessage = {
-      from: Number(user?.id), // giả sử id người gửi là 0 (bạn)
+      from: Number(user?.id),
       to: selectedUser.id,
       message: inputText.trim(),
     };
 
     socket.current.send(JSON.stringify(newMessage));
-
-    setMessages((prev) => [...prev, newMessage]);
+    setMessageHistory((prev) => ({
+      ...prev,
+      [selectedUser.id]: [...(prev[selectedUser.id] || []), newMessage],
+    }));
 
     setInputText("");
   };
@@ -76,25 +105,27 @@ const ChatPage = () => {
       {/* Sidebar */}
       <div className="w-1/4 border-r border-gray-700 p-4 overflow-y-auto">
         <h2 className="text-xl font-semibold mb-4">Users</h2>
-        {users.map((user) => (
-          <div
-            key={user.id}
-            onClick={() => handleUserSelect(user)}
-            className={`flex items-center gap-3 p-2 rounded cursor-pointer hover:bg-gray-800 ${
-              selectedUser?.id === user.id ? "bg-gray-800" : ""
-            }`}
-          >
-            <img
-              src={
-                user.avatar ||
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnPjE6XeVDfS1fnLGfBtagErobejdjZhOHDw&s"
-              }
-              alt="avatar"
-              className="rounded-full w-10 h-10"
-            />
-            <span>{user.username}</span>
-          </div>
-        ))}
+        {users
+          .filter((u) => Number(u.id) !== Number(user?.id))
+          .map((user) => (
+            <div
+              key={user.id}
+              onClick={() => handleUserSelect(user)}
+              className={`flex items-center gap-3 p-2 rounded cursor-pointer hover:bg-gray-800 ${
+                selectedUser?.id === user.id ? "bg-gray-800" : ""
+              }`}
+            >
+              <img
+                src={
+                  user.avatar ||
+                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnPjE6XeVDfS1fnLGfBtagErobejdjZhOHDw&s"
+                }
+                alt="avatar"
+                className="rounded-full w-10 h-10"
+              />
+              <span>{user.username}</span>
+            </div>
+          ))}
       </div>
 
       {/* Chat area */}
@@ -116,24 +147,18 @@ const ChatPage = () => {
           {!selectedUser ? (
             <p className="text-gray-400">No user selected</p>
           ) : (
-            messages
-              .filter(
-                (m) =>
-                  (m.from === selectedUser.id && m.to === 0) ||
-                  (m.from === 0 && m.to === selectedUser.id)
-              )
-              .map((m, idx) => (
-                <div
-                  key={idx}
-                  className={`mb-2 max-w-xs p-2 rounded ${
-                    m.from === 0
-                      ? "bg-blue-600 self-end ml-auto"
-                      : "bg-gray-700"
-                  }`}
-                >
-                  {m.message}
-                </div>
-              ))
+            (messageHistory[selectedUser.id] || []).map((m, idx) => (
+              <div
+                key={idx}
+                className={`mb-2 max-w-xs p-2 rounded ${
+                  m.from === Number(user?.id)
+                    ? "bg-blue-600 self-end ml-auto"
+                    : "bg-gray-700"
+                }`}
+              >
+                {m.message}
+              </div>
+            ))
           )}
         </div>
 
