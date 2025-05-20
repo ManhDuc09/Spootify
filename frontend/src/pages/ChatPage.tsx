@@ -66,6 +66,8 @@ const ChatPage = () => {
     };
   }, [user?.id]);
 
+
+
   const handleUserSelect = async (selected: User) => {
     setSelectedUser(selected);
 
@@ -82,6 +84,8 @@ const ChatPage = () => {
     }
   };
 
+
+  
   const handleSend = () => {
     if (!inputText.trim() || !selectedUser || !socket.current) return;
 

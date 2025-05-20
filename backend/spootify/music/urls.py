@@ -1,6 +1,6 @@
 from django.urls import path , include
 
-from .views import ArtistDetailView, LoginView, RefreshTokenView, TracksByArtistView, logout_view, register_view ,  AlbumListView , TrackListView , AlbumDetailView , ArtistListView , CurrentUserView , UploadImageView , TrackDetailView ,  PlaylistView, UserList , get_chat_history
+from .views import ArtistDetailView, LoginView, RefreshTokenView, TracksByArtistView, logout_view, register_view ,  AlbumListView , TrackListView , AlbumDetailView , ArtistListView , CurrentUserView , UploadImageView , TrackDetailView ,  PlaylistView, UserList , get_chat_history , PlaylistDetailView
 
 urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
@@ -20,4 +20,5 @@ urlpatterns = [
     path('artists/<int:pk>/', ArtistDetailView.as_view()),
     path('artists/<int:artist_id>/tracks/', TracksByArtistView.as_view(), name='tracks-by-artist'),
     path('chat/history/', get_chat_history, name='chat_history'),
+    path('playlists/<int:pk>/', PlaylistDetailView.as_view(), name='playlist-detail'),
 ]

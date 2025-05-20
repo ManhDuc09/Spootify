@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Track, Artist, Album , CustomUser , Playlist
+from .models import Track, Artist, Album , CustomUser , Playlist , PlaylistSong
 
 class ArtistSerializer(serializers.ModelSerializer):
     class Meta:
@@ -62,3 +62,16 @@ class UserSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = ['id', 'username', 'email']
 
+
+class PlaylistDetailSerializer(serializers.ModelSerializer):
+    tracks = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Playlist
+        fields = ['id', 'name', 'tracks']
+
+    def get_tracks(self, obj):
+        playlist_songs = PlaylistSong.objects.filter(playlist=obj).order_by('order')
+        tracks = [ps.track for ps in playlist_songs]
+        serializer = TrackSerializer(tracks, many=True)
+        return serializer.data

@@ -1,11 +1,12 @@
 import { useAuth } from "../../contexts/AuthContext";
+import { Link } from "react-router-dom";
+
 import { useState, useEffect } from "react";
 import {
   getAllPlaylists,
   Playlist,
   createPlaylist,
 } from "../../api/PlaylistService";
-import { useNavigate } from "react-router-dom";
 
 const SideBar = () => {
   const { isLoggedIn, user } = useAuth();
@@ -176,13 +177,13 @@ const SideBar = () => {
                     .filter((p) => p && p.id !== undefined)
                     .map((playlist) => (
                       <li key={playlist.id} className="mb-5">
-                        <a
-                          href={`/playlist/${playlist.id}`}
+                        <Link
+                          to={`/playlist/${playlist.id}`}
                           className="flex items-center space-x-3 text-gray-900 dark:text-white hover:text-blue-500"
                         >
                           <span className="text-xl">🎵</span>
                           <span>{playlist.name}</span>
-                        </a>
+                        </Link>
                       </li>
                     ))}
                 </div>

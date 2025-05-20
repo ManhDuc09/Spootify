@@ -15,7 +15,7 @@ from rest_framework.parsers import MultiPartParser
 from urllib.parse import quote
 
 from .serializers import TrackSerializer , AlbumSerializer , UserInfoSerializer
-from .serializers import TrackSerializer , AlbumSerializer , ArtistSerializer , PlaylistSerializer , UserSerializer
+from .serializers import TrackSerializer , AlbumSerializer , ArtistSerializer , PlaylistSerializer , UserSerializer , PlaylistDetailSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.decorators import api_view, permission_classes , parser_classes
 from rest_framework.permissions import AllowAny
@@ -112,6 +112,11 @@ class UserList(ListAPIView):
 
     def get_queryset(self):
         return User.objects.all()
+
+class PlaylistDetailView(RetrieveAPIView):
+    queryset = Playlist.objects.all()
+    serializer_class = PlaylistDetailSerializer
+    permission_classes = [IsAuthenticated]
 
 
 

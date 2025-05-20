@@ -9,9 +9,10 @@ import UserProfile from "./pages/UserProfile";
 import AdminPanel from "./pages/Admin";
 import ChatPage from "./pages/ChatPage";
 
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import ArtistPage from "./pages/ArtistPage";
+import PlaylistPage from "./pages/PlaylistPage";
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/album/:albumId" element={<AlbumPage />} />
             <Route path="/user/:userId" element={<UserProfile />} />
-            <Route path="/playlist/:playlistId" element={<AlbumPage />} />
+            <Route path="/playlist/:playlistId" element={<PlaylistPage />} />
             <Route path="/chat" element={<ChatPage />} />
             <Route path="/artist/:artistId" element={<ArtistPage />} />
           </Route>

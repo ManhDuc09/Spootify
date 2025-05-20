@@ -16,7 +16,7 @@ export interface Album {
   artist: {
     name: string;
     id: number;
-  }
+  };
   coverUrl: string;
   tracks: Track[];
 }
@@ -26,4 +26,10 @@ export interface Artist {
   name: string;
   image: string;
   genre: string;
+}
+
+export interface PlaylistResponse {
+  id: string;
+  name: string;
+  tracks: Track[];
 }
