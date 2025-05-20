@@ -12,6 +12,7 @@ import ChatPage from "./pages/ChatPage";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ArtistPage from "./pages/ArtistPage";
+import SearchPage from "./pages/SearchPage";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Routes>
           <Route element={<MainLayout />}>
             <Route path="/" element={<Home />} />
+            <Route path="/search" element={<SearchPage />} />
             <Route path="/album/:albumId" element={<AlbumPage />} />
             <Route path="/user/:userId" element={<UserProfile />} />
             <Route path="/playlist/:playlistId" element={<AlbumPage />} />

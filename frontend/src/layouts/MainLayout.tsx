@@ -3,6 +3,7 @@ import TopNavBar from "./components/TopNavBar";
 import SideBar from "./components/SideBar";
 import MusicPlayer from "../components/MusicPlayer";
 
+
 const MainLayout = () => {
   return (
     <>
@@ -10,7 +11,7 @@ const MainLayout = () => {
         <TopNavBar />
         <SideBar />
 
-        <main className="flex-1 p-16 ml-64 mt-16 overflow-visible relative z-0">
+        <main className="flex-1 p-16 pb-64 ml-64  overflow-y-auto mt-16 overflow-visible relative z-0">
           <Outlet />
         </main>
       </div>
@@ -18,6 +19,7 @@ const MainLayout = () => {
       <div className="fixed bottom-0 left-76 right-0 z-40">
         <MusicPlayer />
       </div>
+     
     </>
   );
 };
