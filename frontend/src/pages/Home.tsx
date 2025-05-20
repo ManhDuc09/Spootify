@@ -2,23 +2,27 @@ import { useEffect, useState } from 'react';
 import MusicCard from '../components/MusicCard';
 
 import { fetchAllAlbums } from '../api/albumService';
-import { Album } from '../types';
+import { Album, Artist } from '../types';
+import { fetchAllArtists } from '../api/artistService';
+import ArtistCard from '../components/ArtistCard';
 
 function Home() {
     const [albums, setAlbum] = useState<Album[]>([]);
+    const [artists, setArtists] = useState<Artist[]>([]);
 
     useEffect(() => {
-        const fetchAlbum = async () => {
-             try {
-                const data = await fetchAllAlbums();
-                setAlbum(data);
-            } catch (error) {
-                console.error("Error loading albums:", error);
-            }
-        };
-        fetchAlbum();
-    }, []
-    );
+    const fetchData = async () => {
+        try {
+        const albumData = await fetchAllAlbums();
+        const artistData = await fetchAllArtists();
+        setAlbum(albumData);
+        setArtists(artistData);
+        } catch (error) {
+        console.error("Error loading data:", error);
+        }
+    };
+    fetchData();
+    }, []);
 
     return (
         <>
@@ -38,8 +42,18 @@ function Home() {
 
             </div>
             <div className="p-6">
-                <h1 className="text-2xl font-bold mb-4">Trending Music</h1>
-
+                <h1 className="text-2xl font-bold mb-4">Artists</h1>
+                    <div className="flex gap-4 overflow-x-auto pb-4">
+                    {artists.map((artist: any) =>
+                        <ArtistCard
+                            key={artist.id}
+                            artistId={artist.id}
+                            name={artist.name}
+                            image={artist.image || 'https://via.placeholder.com/150'}
+                            
+                        />
+                    )}
+                </div>
                 <div className="flex gap-4 overflow-x-auto pb-4">
 
 

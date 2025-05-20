@@ -8,6 +8,10 @@ import { AuthProvider } from "./contexts/AuthContext";
 import UserProfile from "./pages/UserProfile";
 import AdminPanel from "./pages/Admin";
 import ChatPage from "./pages/ChatPage";
+import AdminPanel from './pages/Admin';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ArtistPage from "./components/ArtistPage";
 
 function App() {
   return (
@@ -20,12 +24,14 @@ function App() {
             <Route path="/user/:userId" element={<UserProfile />} />
             <Route path="/playlist/:playlistId" element={<AlbumPage />} />
             <Route path="/chat" element={<ChatPage />} />
+            <Route path="/artist/:artistId" element={<ArtistPage />} />
           </Route>
           <Route path="/admin/*" element={<AdminPanel />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>
       </Router>
+       <ToastContainer position="top-right" autoClose={3000} />
     </AuthProvider>
   );
 }

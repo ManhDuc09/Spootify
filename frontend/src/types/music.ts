@@ -19,3 +19,10 @@ export interface Album {
   coverUrl: string;
   tracks: Track[];
 }
+
+export interface Artist {
+  id: number;
+  name: string;
+  image: string;
+  genre: string;
+}
