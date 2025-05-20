@@ -62,7 +62,8 @@ class TracksByArtistView(ListAPIView):
 
     def get_queryset(self):
         artist_id = self.kwargs.get('artist_id')
-        return Track.objects.filter(artist__id=artist_id)
+        return Track.objects.filter(artists__id=artist_id)
+
 
 
 class TrackDetailView(RetrieveUpdateDestroyAPIView ):

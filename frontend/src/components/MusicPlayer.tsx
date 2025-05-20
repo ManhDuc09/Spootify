@@ -3,11 +3,15 @@ import usePlayerStore from '../store/playerStore';
 import ProgressSlider from './ProgressSlider';
 
 const MusicPlayer = () => {
-  const track = usePlayerStore((state) => state.track);
-  const album = usePlayerStore((state) => state.album);
+  const tracks = usePlayerStore((state) => state.tracks);
+  const currentIndex = usePlayerStore((state) => state.currentIndex);
+  
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState<number>(0);
+
+  
+  const track = tracks ? tracks[currentIndex] : null;
 
   const formatTime = (secs: number) => {
     const m = Math.floor(secs / 60);
@@ -16,26 +20,30 @@ const MusicPlayer = () => {
   };
 
   useEffect(() => {
-    if (audioRef.current && track?.url) {
-      audioRef.current.load();
-      audioRef.current.play().then(() => {
-        setIsPlaying(true);
-      }).catch(() => {
-        setIsPlaying(false);
-      });
-    }
-  }, [track?.url]);
+    console.log("Current track changed:", { currentIndex, track, isPlaying });
+  const currentTrack = tracks ? tracks[currentIndex] : null;
+  
+  if (audioRef.current && currentTrack?.url) {
+     console.log("Audio element state:", {
+      src: audioRef.current.src,
+      readyState: audioRef.current.readyState,
+      error: audioRef.current.error
+    });
+    audioRef.current.load();
+    audioRef.current.play()
+      .then(() => setIsPlaying(true))
+      .catch(() => setIsPlaying(false));
+  }
+}, [tracks, currentIndex]);
 
   useEffect(() => {
-	const interval = setInterval(() => {
-		if (audioRef.current) {                   
-		  setCurrentTime(audioRef.current.currentTime); 
-		}
-	  }, 1000)
-	return () => clearInterval(interval);
-
-
-  });
+    const interval = setInterval(() => {
+      if (audioRef.current) {
+        setCurrentTime(audioRef.current.currentTime);
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -53,21 +61,29 @@ const MusicPlayer = () => {
   const handleSliderChange = (value: number) => {
     const audio = audioRef.current;
     if (audio) {
-      audio.currentTime = value; // Move audio time
-      setCurrentTime(value); // Update state
+      audio.currentTime = value; 
+      setCurrentTime(value);
     }
   };
 
 
   const handleNextTrack = () => {
-    if (album) {
-      const currentIndex = album.tracks.findIndex((t) => t.id === track?.id);
-      const nextIndex = (currentIndex + 1) % album.tracks.length;
-      const nextTrack = album.tracks[nextIndex];
-      usePlayerStore.getState().setTrack(nextTrack);
+    if (tracks && tracks.length > 0) {
+      const nextIndex = (currentIndex + 1) % tracks.length;
+      usePlayerStore.getState().setCurrentIndex(nextIndex);
+    }
+  };
+  const handlePreviousTrack = () => {
+    if (tracks && tracks.length > 0) {
+      const prevIndex = (currentIndex - 1 + tracks.length) % tracks.length;
+      usePlayerStore.getState().setCurrentIndex(prevIndex);
     }
   };
   const handleDownload = async () => {
+    if (!track?.url) {
+      console.error('No track URL available for download');
+      return;
+    }
     try {
       const response = await fetch(track.url);
       if (!response.ok) throw new Error('Network response was not ok');
@@ -87,22 +103,15 @@ const MusicPlayer = () => {
     }
   };
 
-  const handlePreviousTrack = () => {
-    if (album) {
-      const currentIndex = album.tracks.findIndex((t) => t.id === track?.id);
-      const prevIndex = (currentIndex - 1 + album.tracks.length) % album.tracks.length;
-      const prevTrack = album.tracks[prevIndex];
-      usePlayerStore.getState().setTrack(prevTrack);
-    }
-  };
+  
 
-  if (!track || !album) return null;
+  if (!tracks ) return null;
 
   return (
     <footer className="h-20 sm:h-24 bg-zinc-900 border-t border-zinc-800 px-4">
       <div className="flex justify-between items-center h-full max-w-[1800px] mx-auto">
         <audio ref={audioRef} controls className="hidden">
-          <source src={track.url} type="audio/mpeg" />
+          <source src={track?.url} type="audio/mpeg" />
           Your browser does not support the audio element.
         </audio>
 
@@ -114,10 +123,10 @@ const MusicPlayer = () => {
           />
           <div className="flex-1 min-w-0">
             <div className="font-medium truncate hover:underline cursor-pointer">
-              {track.name}
+              {track?.name}
             </div>
             <div className="text-sm text-zinc-400 truncate hover:underline cursor-pointer">
-              {track.artist}
+              {track?.artist}
             </div>
           </div>
         </div>
@@ -169,10 +178,10 @@ const MusicPlayer = () => {
             <div className="text-xs text-zinc-400">{formatTime(currentTime)}</div>
             <ProgressSlider
               value={currentTime}
-              max={track.duration}
+              max={track?.duration ?? 0}
               onChange={handleSliderChange}
             />
-            <div className="text-xs text-zinc-400">{formatTime(track.duration)}</div>
+            <div className="text-xs text-zinc-400">{formatTime(track?.duration ?? 0)}</div>
           </div>
         </div>
 
@@ -188,9 +197,19 @@ const MusicPlayer = () => {
           </button>   
           <div className="flex items-center gap-2">
             <button className="hover:text-white text-zinc-400">🔊</button>
-            <div className="w-24 h-1 bg-zinc-700 rounded hover:cursor-grab active:cursor-grabbing">
-              <div className="h-1 bg-white w-3/4 rounded"></div>
-            </div>
+            <input
+              type="range"
+              min={0}
+              max={1}
+              step={0.01}
+              defaultValue={0.75}
+              onChange={(e) => {
+                if (audioRef.current) {
+                  audioRef.current.volume = parseFloat(e.target.value);
+                }
+              }}
+              className="w-24"
+            />
           </div>
         </div>
       </div>

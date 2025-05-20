@@ -1,24 +1,41 @@
 import { create } from 'zustand';
-import { Track,Album } from '../types';
-
+import { Track, Album } from '../types';
+import normalizeTrack from '../utils/normalizeTrack';
 
 interface PlayerState {
-  track: Track | null;
-  album: Album | null;
-  setTrack: (track: Track) => void;
-  setAlbum: (album: Album) => void;
+  tracks: Track[] | null;
+  
+  currentIndex: number;
+  setTracks: (tracks: Track[]) => void;
+  setCurrentIndex: (index: number) => void;
+  
   updateCurrentTime: (time: number) => void;
 }
 
 const usePlayerStore = create<PlayerState>((set) => ({
-  track: null,
+  tracks: null,
   album: null,
-  setTrack: (track) => set({ track }),
-  setAlbum: (album) => set({ album }),
+  currentIndex: 0,
+  setTracks: (tracks) => {
+    const normalized = tracks.map(normalizeTrack);
+    set({ tracks: normalized });
+    console.log("Tracks set in store:", normalized);
+  },
+  setCurrentIndex: (index) => {
+    console.log("Current index set in store:", index);
+
+    set({ currentIndex: index })
+  },
+ 
   updateCurrentTime: (time) =>
     set((state) => ({
-      track: state.track ? { ...state.track, currentTime: time } : null,
+      tracks: state.tracks
+        ? state.tracks.map((track, idx) =>
+            idx === state.currentIndex ? { ...track, currentTime: time } : track
+          )
+        : null,
     })),
+  
 }));
 
 export default usePlayerStore;
