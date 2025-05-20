@@ -17,7 +17,7 @@ from rest_framework.decorators import api_view, permission_classes , parser_clas
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.generics import ListAPIView , RetrieveAPIView
+from rest_framework.generics import ListAPIView , RetrieveAPIView , RetrieveUpdateDestroyAPIView 
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -41,7 +41,7 @@ class RefreshTokenView(TokenRefreshView):
 
 
 
-class AlbumDetailView(RetrieveUpdateAPIView):
+class AlbumDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Album.objects.all()
     serializer_class = AlbumSerializer
     permission_classes = [AllowAny]
@@ -52,23 +52,20 @@ class AlbumListView(ListCreateAPIView):
     permission_classes = [AllowAny]
     pagination_class = ReactAdminPagination
 
-    
-class AlbumDeleteView(DestroyAPIView):
-    queryset = Album.objects.all()
-    serializer_class = AlbumSerializer
-    permission_classes = [AllowAny]
 
 
-class TrackDetailView(RetrieveUpdateAPIView):
+
+class TrackDetailView(RetrieveUpdateDestroyAPIView ):
     queryset = Track.objects.all()
     serializer_class = TrackSerializer
     permission_classes = [AllowAny]
     pagination_class = ReactAdminPagination
-class TrackListView(ListAPIView):
+class TrackListView(ListCreateAPIView):
     queryset = Track.objects.all()
     serializer_class = TrackSerializer
     permission_classes = [AllowAny]
     pagination_class = ReactAdminPagination
+
 
 
 class CurrentUserView(APIView):
