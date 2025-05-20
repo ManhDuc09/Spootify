@@ -8,10 +8,10 @@ import { AuthProvider } from "./contexts/AuthContext";
 import UserProfile from "./pages/UserProfile";
 import AdminPanel from "./pages/Admin";
 import ChatPage from "./pages/ChatPage";
-import AdminPanel from './pages/Admin';
+
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ArtistPage from "./components/ArtistPage";
+import ArtistPage from "./pages/ArtistPage";
 
 function App() {
   return (

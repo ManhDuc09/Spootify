@@ -1,4 +1,5 @@
 export interface Track {
+  audioUrl: string;
   id: number;
   name: string;
   artist: string;
