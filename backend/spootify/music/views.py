@@ -52,7 +52,13 @@ class AlbumListView(ListCreateAPIView):
     permission_classes = [AllowAny]
     pagination_class = ReactAdminPagination
 
+class TracksByArtistView(ListAPIView):
+    serializer_class = TrackSerializer
+    permission_classes = [AllowAny]
 
+    def get_queryset(self):
+        artist_id = self.kwargs.get('artist_id')
+        return Track.objects.filter(artist__id=artist_id)
 
 
 class TrackDetailView(RetrieveUpdateDestroyAPIView ):
@@ -74,12 +80,16 @@ class CurrentUserView(APIView):
         serializer = UserInfoSerializer(request.user)
         return Response(serializer.data)
 
-class ArtistListView(ListAPIView):
+class ArtistListView(ListCreateAPIView):
     queryset = Artist.objects.all()
     serializer_class = ArtistSerializer
     permission_classes = [AllowAny]
     pagination_class = ReactAdminPagination
-
+class ArtistDetailView(RetrieveUpdateDestroyAPIView):
+    queryset = Artist.objects.all()
+    serializer_class = ArtistSerializer
+    permission_classes = [AllowAny]
+    pagination_class = ReactAdminPagination
 
 class PlaylistView(ListCreateAPIView):
     serializer_class = PlaylistSerializer

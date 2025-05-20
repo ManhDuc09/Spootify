@@ -7,6 +7,9 @@ import AlbumEdit from '../components/admin/album/AlbumEdit';
 import AlbumCreate from '../components/admin/album/AlbumCreate';
 import TrackEdit from '../components/admin/track/TrackEdit';
 import TrackCreate from '../components/admin/track/TrackCreate';
+import ArtistList from '../components/admin/artists/ArtistList';
+import ArtistEdit from '../components/admin/artists/ArtistEdit';
+import ArtistCreate from '../components/admin/artists/ArtistCreate';
 
 
 
@@ -23,6 +26,9 @@ const AdminPanel = () => {
             edit={TrackEdit}
             create={TrackCreate}
             />
+            <Resource name="artists" list={ArtistList}
+            edit = {ArtistEdit}
+            create = {ArtistCreate}/>
         </Admin>
     );
 };

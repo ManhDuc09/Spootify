@@ -4,7 +4,7 @@ from .models import Track, Artist, Album , CustomUser , Playlist
 class ArtistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Artist
-        fields = ['id', 'name']
+        fields = ['id', 'name' , 'genre' , 'image']
 
 class AlbumSummarySerializer(serializers.ModelSerializer):
     class Meta:

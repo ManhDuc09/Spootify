@@ -9,6 +9,7 @@ import UserProfile from "./pages/UserProfile";
 import AdminPanel from './pages/Admin';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ArtistPage from "./components/ArtistPage";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/album/:albumId" element={<AlbumPage />} />
             <Route path="/user/:userId" element={<UserProfile />} />
+            <Route path="/artist/:artistId" element={<ArtistPage />} />
           </Route>
           <Route path="/admin/*" element={<AdminPanel />} />
           <Route path="/login" element={<Login />} />
