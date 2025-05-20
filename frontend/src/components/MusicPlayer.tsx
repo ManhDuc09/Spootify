@@ -5,7 +5,7 @@ import ProgressSlider from './ProgressSlider';
 const MusicPlayer = () => {
   const tracks = usePlayerStore((state) => state.tracks);
   const currentIndex = usePlayerStore((state) => state.currentIndex);
-  const album = usePlayerStore((state) => state.album);
+  
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState<number>(0);
@@ -20,26 +20,30 @@ const MusicPlayer = () => {
   };
 
   useEffect(() => {
-    if (audioRef.current && track?.url) {
-      audioRef.current.load();
-      audioRef.current.play().then(() => {
-        setIsPlaying(true);
-      }).catch(() => {
-        setIsPlaying(false);
-      });
-    }
-  }, [track?.url]);
+    console.log("Current track changed:", { currentIndex, track, isPlaying });
+  const currentTrack = tracks ? tracks[currentIndex] : null;
+  
+  if (audioRef.current && currentTrack?.url) {
+     console.log("Audio element state:", {
+      src: audioRef.current.src,
+      readyState: audioRef.current.readyState,
+      error: audioRef.current.error
+    });
+    audioRef.current.load();
+    audioRef.current.play()
+      .then(() => setIsPlaying(true))
+      .catch(() => setIsPlaying(false));
+  }
+}, [tracks, currentIndex]);
 
   useEffect(() => {
-	const interval = setInterval(() => {
-		if (audioRef.current) {                   
-		  setCurrentTime(audioRef.current.currentTime); 
-		}
-	  }, 1000)
-	return () => clearInterval(interval);
-
-
-  });
+    const interval = setInterval(() => {
+      if (audioRef.current) {
+        setCurrentTime(audioRef.current.currentTime);
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
