@@ -2,13 +2,23 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useSearchStore } from "../../store/searchStore";
 
 const TopNavBar = () => {
   const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const { query, setQuery } = useSearchStore();
+  
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const storedUser = localStorage.getItem("user");
   let userId = "User";
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Search query:", query);
+    if (query.trim()) {
+      navigate(`/search?q=${encodeURIComponent(query)}`);
+    }
+  };
 
   if (storedUser) {
     try {
@@ -40,7 +50,7 @@ const TopNavBar = () => {
           </span>
         </Link>
 
-        <form className="max-w-xs flex-grow ml-17 mr-5">
+        <form className="max-w-xs flex-grow ml-17 mr-5  w-full max-w-sm" onSubmit={handleSubmit} >
           <div className="relative">
             <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
               <svg
@@ -58,11 +68,13 @@ const TopNavBar = () => {
                 />
               </svg>
             </div>
+             
             <input
               type="search"
               id="default-search"
               className="block w-full p-4 ps-10 text-sm text-white rounded-full bg-gray-800 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Search..."
+              placeholder="Search for artists, songs, albums..."
+              onChange={(e) => setQuery(e.target.value)}
               required
             />
             <button
@@ -71,6 +83,7 @@ const TopNavBar = () => {
             >
               Search
             </button>
+            
           </div>
         </form>
 

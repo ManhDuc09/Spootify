@@ -56,7 +56,7 @@ const SideBar = () => {
 
   return (
     <>
-      {/* Sidebar */}
+     
       <aside
         id="default-sidebar"
         className="fixed top-21 left-0 z-40 w-75 h-screen transition-transform -translate-x-full sm:translate-x-0"

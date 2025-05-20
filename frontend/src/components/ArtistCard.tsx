@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 type ArtistCardProps = {
   name: string;
   image: string;
-  artistId: string;
+  artistId: number;
 };
 
 const ArtistCard = ({ name, image, artistId }: ArtistCardProps) => {
