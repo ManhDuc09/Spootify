@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getAllPlaylists } from "../api/playlistService";
+import { getAllPlaylists } from "../api/PlaylistService";
 
 interface Playlist {
   id: number;
@@ -40,7 +40,6 @@ const UserProfile = () => {
       try {
         let data = await getAllPlaylists();
 
-        // Nếu backend trả về playlist mà không có ảnh, mình sẽ gán ảnh mẫu cho mỗi playlist để đẹp hơn
         data = data.map((playlist, index) => ({
           ...playlist,
           image:

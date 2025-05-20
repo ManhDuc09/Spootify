@@ -5,7 +5,7 @@ class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
     role = models.CharField(
         max_length=10,
-        choices=[('admin', 'Admin'), ('user', 'User'), ('mod', 'Mod')],
+        choices=[('admin', 'Admin'), ('user', 'User')],
         default='user'
     )
     

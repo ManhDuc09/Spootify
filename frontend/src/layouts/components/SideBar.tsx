@@ -4,7 +4,8 @@ import {
   getAllPlaylists,
   Playlist,
   createPlaylist,
-} from "../../api/playlistService";
+} from "../../api/PlaylistService";
+import { useNavigate } from "react-router-dom";
 
 const SideBar = () => {
   const { isLoggedIn, user } = useAuth();
@@ -12,7 +13,6 @@ const SideBar = () => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [playlistName, setPlaylistName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   useEffect(() => {
     const fetchPlaylists = async () => {
       if (!isLoggedIn || !user) {
@@ -22,6 +22,7 @@ const SideBar = () => {
 
       try {
         const data = await getAllPlaylists();
+        console.log("Playlists:", data);
         setPlaylists(data);
       } catch (error) {
         console.error("Không lấy được playlist", error);
@@ -31,7 +32,8 @@ const SideBar = () => {
     fetchPlaylists();
   }, [isLoggedIn, user]);
 
-  const handleCreatePlaylist = async () => {
+  const handleCreatePlaylist = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (!user || !playlistName.trim()) {
       alert("Playlist name is required");
       return;
@@ -39,8 +41,10 @@ const SideBar = () => {
 
     try {
       const userId = Number(user.id);
-      const newPlaylist = await createPlaylist(userId, playlistName.trim());
-      setPlaylists((prev) => [...prev, newPlaylist]);
+      await createPlaylist(userId, playlistName.trim());
+      const updatedPlaylists = await getAllPlaylists();
+      setPlaylists(updatedPlaylists);
+
       setPlaylistName("");
       setIsModalOpen(false);
     } catch (error) {
@@ -61,8 +65,9 @@ const SideBar = () => {
           <ul className="space-y-2 font-medium">
             {/* Your Library */}
             <li>
-              <a
-                href="#"
+              <button
+                type="button"
+                onClick={(e) => e.preventDefault()}
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <svg
@@ -76,7 +81,7 @@ const SideBar = () => {
                   <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
                 </svg>
                 <span className="ms-3">Your Library</span>
-              </a>
+              </button>
             </li>
 
             {/* Nút "Create Playlist" khi đã có playlist */}
@@ -165,17 +170,23 @@ const SideBar = () => {
               </li>
             ) : (
               // Danh sách playlist
-              playlists.map((playlist) => (
-                <li key={playlist.id} className="mb-5">
-                  <a
-                    href={`/playlist/${playlist.id}`}
-                    className="flex items-center space-x-3 text-gray-900 dark:text-white hover:text-blue-500"
-                  >
-                    <span className="text-xl">🎵</span>
-                    <span>{playlist.name}</span>
-                  </a>
-                </li>
-              ))
+              <ul className="space-y-2 font-medium">
+                <div className="max-h-[300px] overflow-y-auto pr-2">
+                  {playlists
+                    .filter((p) => p && p.id !== undefined)
+                    .map((playlist) => (
+                      <li key={playlist.id} className="mb-5">
+                        <a
+                          href={`/playlist/${playlist.id}`}
+                          className="flex items-center space-x-3 text-gray-900 dark:text-white hover:text-blue-500"
+                        >
+                          <span className="text-xl">🎵</span>
+                          <span>{playlist.name}</span>
+                        </a>
+                      </li>
+                    ))}
+                </div>
+              </ul>
             )}
           </ul>
         </div>
@@ -202,12 +213,14 @@ const SideBar = () => {
 
             <div className="flex justify-end space-x-2">
               <button
+                type="button" // <-- thêm type button tránh submit form
                 className="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400"
                 onClick={() => setIsModalOpen(false)}
               >
                 Cancel
               </button>
               <button
+                type="button" // <-- thêm type button tránh submit form
                 className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
                 onClick={handleCreatePlaylist}
               >

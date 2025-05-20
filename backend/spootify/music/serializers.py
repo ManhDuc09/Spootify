@@ -57,3 +57,8 @@ class PlaylistSerializer(serializers.ModelSerializer):
         model = Playlist
         fields = ['id', 'name', 'user']
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'username', 'email']
+
