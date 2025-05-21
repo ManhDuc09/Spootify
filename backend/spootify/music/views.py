@@ -127,6 +127,14 @@ class AddTrackToPlaylistView(APIView):
         PlaylistSong.objects.create(playlist_id=pk, track_id=track_id)
         return Response({"message": "Track added"}, status=status.HTTP_201_CREATED)
 
+class RemoveTrackFromPlaylistView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        track_id = request.data.get("track_id")
+        PlaylistSong.objects.filter(playlist_id=pk, track_id=track_id).delete()
+        return Response({"message": "Track removed"}, status=status.HTTP_204_NO_CONTENT)
+
 @api_view(['POST'])
 def logout_view(request):
     try:
@@ -149,7 +157,7 @@ def register_view(request):
     user = User.objects.create(
         username=data['email'],
         email=data['email'],
-        password=make_password(data['password'])  # Hash mật khẩu
+        password=make_password(data['password']) 
     )
     
     return Response({"message": "User registered successfully."}, status=status.HTTP_201_CREATED)

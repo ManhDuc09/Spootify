@@ -30,7 +30,6 @@ function App() {
             <Route path="/artist/:artistId" element={<ArtistPage />} />
           </Route>
 
-          {/* Route chỉ cho admin */}
           <Route
             path="/admin/*"
             element={
