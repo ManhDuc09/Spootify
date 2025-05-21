@@ -1,8 +1,7 @@
 from django.shortcuts import render
 from .models import CustomUser as User
 from .models.track import Track
-from .models import Album , Artist, Playlist 
-from .models import ChatMessage
+from .models import Album , Artist, Playlist , PlaylistSong , ChatMessage
 from django.db.models import Q
 from music.models import ChatMessage
 
@@ -118,7 +117,15 @@ class PlaylistDetailView(RetrieveAPIView):
     serializer_class = PlaylistDetailSerializer
     permission_classes = [IsAuthenticated]
 
+class AddTrackToPlaylistView(APIView):
+    permission_classes = [IsAuthenticated]
 
+    def post(self, request, pk):
+        track_id = request.data.get("track_id")
+        if PlaylistSong.objects.filter(playlist_id=pk, track_id=track_id).exists():
+            return Response({"message": "Track already in playlist"}, status=status.HTTP_200_OK)
+        PlaylistSong.objects.create(playlist_id=pk, track_id=track_id)
+        return Response({"message": "Track added"}, status=status.HTTP_201_CREATED)
 
 @api_view(['POST'])
 def logout_view(request):
