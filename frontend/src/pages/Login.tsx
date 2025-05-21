@@ -47,9 +47,13 @@ const Login = () => {
         return;
       }
 
+      if (user.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
       setIsLoggedIn(true);
       console.log("Tokens saved successfully.");
-      navigate("/");
     } catch (error) {
       console.error("Lỗi đăng nhập:", error);
       alert(

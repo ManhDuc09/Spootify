@@ -21,6 +21,16 @@ export const createPlaylist = async (
   return response.data;
 };
 
+export const addTrackToPlaylist = async (
+  playlistId: Number,
+  trackId: Number
+): Promise<any> => {
+  const response = await axios.post(`playlists/${playlistId}/add-track/`, {
+    track_id: trackId,
+  });
+  return response.data;
+};
+
 export const fetchPlaylistById = async (
   id: string
 ): Promise<PlaylistResponse> => {

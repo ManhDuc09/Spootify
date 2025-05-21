@@ -2,18 +2,18 @@ import MainLayout from "./layouts/MainLayout";
 import AlbumPage from "./pages/AlbumPage";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Register from "./pages/Register";
-import { AuthProvider } from "./contexts/AuthContext";
 import UserProfile from "./pages/UserProfile";
 import AdminPanel from "./pages/Admin";
 import ChatPage from "./pages/ChatPage";
-
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import ArtistPage from "./pages/ArtistPage";
 import PlaylistPage from "./pages/PlaylistPage";
 import SearchPage from "./pages/SearchPage";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import { AuthProvider } from "./contexts/AuthContext";
+import AdminRoute from "./pages/AdminRoute";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -29,7 +29,17 @@ function App() {
             <Route path="/chat" element={<ChatPage />} />
             <Route path="/artist/:artistId" element={<ArtistPage />} />
           </Route>
-          <Route path="/admin/*" element={<AdminPanel />} />
+
+          {/* Route chỉ cho admin */}
+          <Route
+            path="/admin/*"
+            element={
+              <AdminRoute>
+                <AdminPanel />
+              </AdminRoute>
+            }
+          />
+
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>

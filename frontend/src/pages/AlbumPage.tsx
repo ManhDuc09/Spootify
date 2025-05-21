@@ -2,12 +2,9 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import usePlayerStore from "../store/playerStore";
 import { Track, Album } from "../types";
-import {
-  getAllPlaylists,
-  Playlist,
-  createPlaylist,
-} from "../api/PlaylistService";
+import { getAllPlaylists, Playlist } from "../api/PlaylistService";
 import { fetchAlbumById } from "../api/albumService";
+import { addTrackToPlaylist } from "../api/playlistService";
 
 const AlbumPage = () => {
   const setTracks = usePlayerStore((state) => state.setTracks);
@@ -37,8 +34,9 @@ const AlbumPage = () => {
     setIsModalOpen(true);
   };
 
-  const handlePlaylistSelect = (playlistId: string) => {
+  const handlePlaylistSelect = async (playlistId: string) => {
     if (selectedTrack) {
+      await addTrackToPlaylist(Number(playlistId), selectedTrack.id);
       console.log(`Thêm bài ${selectedTrack.id} vào playlist ${playlistId}`);
     }
     setIsModalOpen(false);
