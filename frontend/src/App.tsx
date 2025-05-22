@@ -14,6 +14,7 @@ import { ToastContainer } from "react-toastify";
 import { AuthProvider } from "./contexts/AuthContext";
 import AdminRoute from "./pages/AdminRoute";
 import "react-toastify/dist/ReactToastify.css";
+import TrackPage from "./pages/TrackPage";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             <Route path="/playlist/:playlistId" element={<PlaylistPage />} />
             <Route path="/chat" element={<ChatPage />} />
             <Route path="/artist/:artistId" element={<ArtistPage />} />
+            <Route path="/tracks/:trackId" element={<TrackPage />} />
           </Route>
 
           <Route

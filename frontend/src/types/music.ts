@@ -9,7 +9,7 @@ export interface Track {
   currentTime: number;
   url: string;
   isPlaying: boolean;
-  releaseDate: string;
+  releaseDate: Date;
 }
 
 export interface Album {
