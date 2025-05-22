@@ -107,10 +107,16 @@ class PlaylistView(ListCreateAPIView):
 
 class UserList(ListAPIView):
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
+    pagination_class = ReactAdminPagination
 
     def get_queryset(self):
         return User.objects.all()
+class UserDetailView(RetrieveUpdateDestroyAPIView ):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [AllowAny]
+    pagination_class = ReactAdminPagination
 
 class PlaylistDetailView(RetrieveAPIView):
     queryset = Playlist.objects.all()
