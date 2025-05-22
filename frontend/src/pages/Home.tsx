@@ -39,8 +39,12 @@ function Home() {
                         <TrackCard
                             key={track.id}
                             title={track.name}
-                            artist={track.artist?.name || 'Unknown Artist'}
-                            image={track.image || 'https://via.placeholder.com/150'}
+                           artist={
+                                Array.isArray(track.artists)
+                                ? track.artists.map((a: { name: any }) => a.name).join(', ')
+                                : track.artists?.name
+                            }
+                            image={track.cover_url || 'https://via.placeholder.com/150'}
                             trackId={track.id}
                         />
                     )}

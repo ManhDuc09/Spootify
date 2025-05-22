@@ -91,9 +91,12 @@ const AlbumPage = () => {
               <button
                 className="w-14 h-14 rounded-full bg-green-500 hover:bg-green-400 hover:scale-105 transition-all flex items-center justify-center"
                 onClick={() => {
-                  setTracks(album.tracks);
-                  setCurrentIndex(0);
-                }}
+                    if (album.tracks.length > 0) {
+                      setTracks(album.tracks); 
+                      setCurrentIndex(0);
+                    }
+                  }}
+                  disabled={album.tracks.length === 0}
               >
                 <span className="text-black text-lg">▶</span>
               </button>

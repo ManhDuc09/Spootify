@@ -8,7 +8,7 @@ export const fetchAlbumById = async (albumId: string): Promise<Album> => {
   const transformed: Album = {
     name: response.name,
     artist: response.artist,
-    coverUrl: response.coverUrl,
+    coverUrl: response.image,
     tracks: response.tracks.map((t: any) => ({
       id: t.id,
       name: t.name,

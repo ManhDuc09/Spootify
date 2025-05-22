@@ -34,8 +34,7 @@ const Login = () => {
 
       localStorage.setItem("accessToken", response.access);
       localStorage.setItem("refreshToken", response.refresh);
-      alert(localStorage.getItem("accessToken"));
-
+     
       const user = await getUserInfo();
       console.log("User info:", user);
 
@@ -53,6 +52,8 @@ const Login = () => {
         navigate("/");
       }
       setIsLoggedIn(true);
+      alert("Đăng nhập thành công!");
+      console.log("Access token:", response.access);
       console.log("Tokens saved successfully.");
     } catch (error) {
       console.error("Lỗi đăng nhập:", error);

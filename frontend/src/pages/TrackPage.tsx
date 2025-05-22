@@ -71,7 +71,7 @@ const TrackPage = () => {
           <div className="relative z-10">
             <div className="flex p-6 gap-6 pb-8">
               <img
-                src={track.coverUrl}
+                src={track.cover_url}
                 alt={track.name}
                 className="w-[240px] h-[240px] shadow-xl rounded"
               />
@@ -80,8 +80,10 @@ const TrackPage = () => {
                 <h1 className="text-7xl font-bold my-4">{track.name}</h1>
                 <div className="flex items-center gap-2 text-sm text-zinc-100">
                   <span className="font-medium text-white">
-                    {track.artist?.name}
-                  </span>
+                    {Array.isArray(track.artists)
+                        ? track.artists.map((a) => a.name).join(', ')
+                        : track.artists?.name}
+                    </span>
                   
            
                 </div>
@@ -130,7 +132,7 @@ const TrackPage = () => {
 
                   <div className="flex items-center gap-3">
                     <img
-                      src={track.coverUrl}
+                      src={track.cover_url}
                       alt={track.name}
                       className="size-10"
                     />
@@ -140,7 +142,7 @@ const TrackPage = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-center">{track?.releaseDate}</div>
+                  <div className="flex items-center">{track?.release_date}</div>
 
                   <div className="flex items-center">
                     {Math.floor(track.duration / 60)}:

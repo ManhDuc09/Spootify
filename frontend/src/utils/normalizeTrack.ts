@@ -9,7 +9,12 @@ const normalizeTrack = (raw: any): Track => ({
   artist: raw.artists
     ? raw.artists.map((a: any) => a.name).join(", ")
     : raw.artist || "Unknown",
-  album: typeof raw.album === "object" ? raw.album.name : raw.album || "Unknown",
+  album:
+  raw.album && typeof raw.album === "object"
+    ? raw.album.name
+    : typeof raw.album === "string"
+    ? raw.album
+    : "Unknown",
   duration: raw.duration || 0,
   currentTime: 0,
   isPlaying: false,
