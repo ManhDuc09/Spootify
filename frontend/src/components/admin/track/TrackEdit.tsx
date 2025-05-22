@@ -11,6 +11,7 @@ import {
   useNotify,
   ReferenceInput,
   SelectInput,
+  DateInput,
 } from "react-admin";
 import axios from "axios";
 
@@ -70,13 +71,12 @@ const TrackEdit = () => {
         <ReferenceArrayInput source="artist_ids" reference="artists">
           <SelectArrayInput optionText="name" />
         </ReferenceArrayInput>
-
-        
+       
         <FileInput source="audio_url" label="Music File" accept="audio/*" multiple={false}>
           <FileField source="src" title="title" />
         </FileInput>
 
-        
+        <DateInput source="release_date" />
         <ImageInput
         source="cover_url"
         label="Cover Image"

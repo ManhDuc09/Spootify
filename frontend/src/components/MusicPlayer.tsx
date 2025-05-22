@@ -110,7 +110,7 @@ const MusicPlayer = () => {
             ref={mediaRef as React.RefObject<HTMLVideoElement>}
             src={track?.url}
             controls
-            style={{ width: "100%", maxHeight: "360px", borderRadius: '8px' }}
+            className="w-full max-w-[720px] aspect-video rounded-lg shadow-lg"
           />
         ) : (
           <audio ref={mediaRef as React.RefObject<HTMLAudioElement>} controls className="hidden">

@@ -139,7 +139,7 @@ const AlbumPage = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-center">2024-01-01</div>
+                  <div className="flex items-center">{track?.releaseDate}</div>
 
                   <div className="flex items-center">
                     {Math.floor(track.duration / 60)}:

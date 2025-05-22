@@ -7,7 +7,7 @@ type MusicCardProps = {
   albumId: string; 
 };
 
-const MusicCard = ({ title, artist, image, albumId }: MusicCardProps) => {
+const AlbumCard = ({ title, artist, image, albumId }: MusicCardProps) => {
   return (
     <Link to={`/album/${albumId}`} className="w-full sm:w-64 bg-white rounded-xl shadow hover:shadow-lg transition cursor-pointer overflow-hidden group">
      
@@ -34,4 +34,4 @@ const MusicCard = ({ title, artist, image, albumId }: MusicCardProps) => {
   );
 };
 
-export default MusicCard;
+export default AlbumCard;

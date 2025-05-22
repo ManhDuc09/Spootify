@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { fetchAllAlbums } from '../api/albumService';
 import { fetchAllArtists } from '../api/artistService';
-import MusicCard from '../components/MusicCard';
+import AlbumCard from '../components/AlbumCard';
 import ArtistCard from '../components/ArtistCard';
 import { Album, Artist } from '../types';
 
@@ -42,7 +42,7 @@ const SearchPage = () => {
         <div className="flex gap-4 overflow-x-auto">
           {filteredAlbums.length > 0 ? (
             filteredAlbums.map((album) => (
-              <MusicCard
+              <AlbumCard
                 key={album.id}
                 title={album.name}
                 artist={album.artist?.name || 'Unknown Artist'}

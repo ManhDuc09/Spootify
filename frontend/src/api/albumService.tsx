@@ -19,6 +19,8 @@ export const fetchAlbumById = async (albumId: string): Promise<Album> => {
       currentTime: 0,
       url: t.audio_url,
       isPlaying: false,
+      releaseDate: t.release_date
+,
     })),
   };
 

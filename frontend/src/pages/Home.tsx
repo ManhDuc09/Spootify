@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import MusicCard from '../components/MusicCard';
+import AlbumCard from '../components/AlbumCard';
 
 import { fetchAllAlbums } from '../api/albumService';
 import { Album, Artist } from '../types';
@@ -30,7 +30,7 @@ function Home() {
                 <h1 className="text-2xl font-bold mb-4">Trending Music</h1>
                 <div className="flex gap-4 overflow-x-auto pb-4">
                     {albums.map((album: any) =>
-                        <MusicCard
+                        <AlbumCard
                             key={album.id}
                             title={album.name}
                             artist={album.artist?.name || 'Unknown Artist'}
