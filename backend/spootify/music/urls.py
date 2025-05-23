@@ -1,6 +1,6 @@
 from django.urls import path , include
 
-from .views import ArtistDetailView, LoginView, RefreshTokenView, TracksByArtistView, logout_view, register_view ,  AlbumListView , TrackListView , AlbumDetailView , ArtistListView , CurrentUserView , UploadImageView , TrackDetailView ,  PlaylistView, UserList , get_chat_history , PlaylistDetailView , AddTrackToPlaylistView , RemoveTrackFromPlaylistView, UserDetailView
+from .views import ArtistDetailView, LoginView, RefreshTokenView, TracksByArtistView, logout_view, register_view ,  AlbumListView , TrackListView , AlbumDetailView , ArtistListView , CurrentUserView , UploadImageView , TrackDetailView ,  PlaylistView, UserList , get_chat_history , PlaylistDetailView , AddTrackToPlaylistView , RemoveTrackFromPlaylistView, UserDetailView , PlaylistStatusUpdateView
 
 urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
@@ -24,4 +24,5 @@ urlpatterns = [
     path('playlists/<int:pk>/', PlaylistDetailView.as_view(), name='playlist-detail'),
     path('playlists/<int:pk>/add-track/', AddTrackToPlaylistView.as_view(), name='add-track-to-playlist'),
     path('playlists/<int:pk>/remove-track/', RemoveTrackFromPlaylistView.as_view(), name='remove_track_from_playlist'),
+    path('playlists/<int:pk>/status/', PlaylistStatusUpdateView.as_view(), name='playlist-status-update'),
 ]

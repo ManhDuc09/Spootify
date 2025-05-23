@@ -1,5 +1,5 @@
 import { Admin, Resource } from 'react-admin';
-import DataProvider from '../dataprovider/DataProvider';
+import DataProvider from '../layouts/components/dataprovider/DataProvider';
 
 import AlbumList from '../components/admin/album/AlbumList';
 import TrackList from '../components/admin/track/TrackList';

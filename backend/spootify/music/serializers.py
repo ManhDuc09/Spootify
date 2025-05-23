@@ -75,3 +75,8 @@ class PlaylistDetailSerializer(serializers.ModelSerializer):
         tracks = [ps.track for ps in playlist_songs]
         serializer = TrackSerializer(tracks, many=True)
         return serializer.data
+
+class PlaylistStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Playlist
+        fields = ['status']

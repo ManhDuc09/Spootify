@@ -41,6 +41,16 @@ export const removeTrackFromPlaylist = async (
   return response.data;
 };
 
+export const deletePlaylist = async (
+  playlistId: number,
+  status: number
+): Promise<any> => {
+  const response = await axios.put(`/playlists/${playlistId}/status/`, {
+    status,
+  });
+  return response.data;
+};
+
 export const fetchPlaylistById = async (
   id: string
 ): Promise<PlaylistResponse> => {

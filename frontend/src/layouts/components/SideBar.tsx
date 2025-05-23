@@ -1,12 +1,12 @@
 import { useAuth } from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
-
 import { useState, useEffect } from "react";
 import {
   getAllPlaylists,
   Playlist,
   createPlaylist,
 } from "../../api/PlaylistService";
+import { deletePlaylist } from "../../api/playlistService";
 
 const SideBar = () => {
   const { isLoggedIn, user } = useAuth();
@@ -14,24 +14,35 @@ const SideBar = () => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [playlistName, setPlaylistName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [contextMenu, setContextMenu] = useState<{
+    visible: boolean;
+    x: number;
+    y: number;
+    playlistId: number | null;
+  }>({ visible: false, x: 0, y: 0, playlistId: null });
+
   useEffect(() => {
     const fetchPlaylists = async () => {
       if (!isLoggedIn || !user) {
         setPlaylists([]);
         return;
       }
-
       try {
         const data = await getAllPlaylists();
-        console.log("Playlists:", data);
         setPlaylists(data);
       } catch (error) {
         console.error("Không lấy được playlist", error);
       }
     };
-
     fetchPlaylists();
   }, [isLoggedIn, user]);
+
+  useEffect(() => {
+    const handleClick = () =>
+      setContextMenu({ ...contextMenu, visible: false });
+    window.addEventListener("click", handleClick);
+    return () => window.removeEventListener("click", handleClick);
+  }, [contextMenu]);
 
   const handleCreatePlaylist = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,13 +50,11 @@ const SideBar = () => {
       alert("Playlist name is required");
       return;
     }
-
     try {
       const userId = Number(user.id);
       await createPlaylist(userId, playlistName.trim());
       const updatedPlaylists = await getAllPlaylists();
       setPlaylists(updatedPlaylists);
-
       setPlaylistName("");
       setIsModalOpen(false);
     } catch (error) {
@@ -54,9 +63,30 @@ const SideBar = () => {
     }
   };
 
+  const handleDeletePlaylist = async (playlistId: number | null) => {
+    if (!playlistId) return;
+    try {
+      await deletePlaylist(playlistId, 0);
+      const updatedPlaylists = await getAllPlaylists();
+      setPlaylists(updatedPlaylists);
+      setContextMenu({ ...contextMenu, visible: false });
+    } catch (error) {
+      console.error("Xoá playlist thất bại:", error);
+    }
+  };
+
+  const handleContextMenu = (event: React.MouseEvent, playlistId: number) => {
+    event.preventDefault();
+    setContextMenu({
+      visible: true,
+      x: event.pageX,
+      y: event.pageY,
+      playlistId,
+    });
+  };
+
   return (
     <>
-     
       <aside
         id="default-sidebar"
         className="fixed top-21 left-0 z-40 w-75 h-screen transition-transform -translate-x-full sm:translate-x-0"
@@ -64,7 +94,6 @@ const SideBar = () => {
       >
         <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
           <ul className="space-y-2 font-medium">
-            {/* Your Library */}
             <li>
               <button
                 type="button"
@@ -84,8 +113,6 @@ const SideBar = () => {
                 <span className="ms-3">Your Library</span>
               </button>
             </li>
-
-            {/* Nút "Create Playlist" khi đã có playlist */}
             {isLoggedIn && playlists.length > 0 && (
               <li>
                 <button
@@ -109,8 +136,6 @@ const SideBar = () => {
                 </button>
               </li>
             )}
-
-            {/* Nếu chưa có playlist thì hiển thị block khuyến khích tạo */}
             {playlists.length === 0 ? (
               <li>
                 <div className="p-3 mt-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-black dark:text-white">
@@ -118,7 +143,6 @@ const SideBar = () => {
                     Create your first playlist
                   </h4>
                   <p className="text-xs mb-2">It's easy, we'll help you</p>
-
                   {isLoggedIn ? (
                     <button
                       className="px-3 py-1 text-sm font-semibold text-white bg-black rounded-full hover:bg-gray-900"
@@ -134,7 +158,6 @@ const SideBar = () => {
                       >
                         Create playlist
                       </button>
-
                       {isPopupOpen && (
                         <div className="absolute left-1/2 top-full mt-1 transform -translate-x-1/2 w-60 p-3 text-sm text-black bg-blue-400 rounded shadow-lg z-50">
                           <strong
@@ -170,13 +193,16 @@ const SideBar = () => {
                 </div>
               </li>
             ) : (
-              // Danh sách playlist
               <ul className="space-y-2 font-medium">
                 <div className="max-h-[300px] overflow-y-auto pr-2">
                   {playlists
                     .filter((p) => p && p.id !== undefined)
                     .map((playlist) => (
-                      <li key={playlist.id} className="mb-5">
+                      <li
+                        key={playlist.id}
+                        className="mb-5"
+                        onContextMenu={(e) => handleContextMenu(e, playlist.id)}
+                      >
                         <Link
                           to={`/playlist/${playlist.id}`}
                           className="flex items-center space-x-3 text-gray-900 dark:text-white hover:text-blue-500"
@@ -193,7 +219,6 @@ const SideBar = () => {
         </div>
       </aside>
 
-      {/* Modal: Đặt ngoài aside */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/10">
           <div
@@ -203,7 +228,6 @@ const SideBar = () => {
             <h2 className="text-xl font-semibold mb-4 text-center">
               Create a Playlist
             </h2>
-
             <input
               type="text"
               className="w-full p-2 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -211,17 +235,16 @@ const SideBar = () => {
               value={playlistName}
               onChange={(e) => setPlaylistName(e.target.value)}
             />
-
             <div className="flex justify-end space-x-2">
               <button
-                type="button" // <-- thêm type button tránh submit form
+                type="button"
                 className="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400"
                 onClick={() => setIsModalOpen(false)}
               >
                 Cancel
               </button>
               <button
-                type="button" // <-- thêm type button tránh submit form
+                type="button"
                 className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
                 onClick={handleCreatePlaylist}
               >
@@ -229,6 +252,20 @@ const SideBar = () => {
               </button>
             </div>
           </div>
+        </div>
+      )}
+
+      {contextMenu.visible && (
+        <div
+          className="absolute z-50 bg-white dark:bg-gray-700 shadow-md rounded p-2 text-sm text-black dark:text-white"
+          style={{ top: contextMenu.y, left: contextMenu.x }}
+        >
+          <button
+            className="hover:bg-gray-200 dark:hover:bg-gray-600 block w-full text-left px-2 py-1"
+            onClick={() => handleDeletePlaylist(contextMenu.playlistId)}
+          >
+            ❌ Delete Playlist
+          </button>
         </div>
       )}
     </>

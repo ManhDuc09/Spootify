@@ -14,7 +14,7 @@ from rest_framework.parsers import MultiPartParser
 from urllib.parse import quote
 
 from .serializers import TrackSerializer , AlbumSerializer , UserInfoSerializer
-from .serializers import TrackSerializer , AlbumSerializer , ArtistSerializer , PlaylistSerializer , UserSerializer , PlaylistDetailSerializer
+from .serializers import TrackSerializer , AlbumSerializer , ArtistSerializer , PlaylistSerializer , UserSerializer , PlaylistDetailSerializer , PlaylistStatusSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.decorators import api_view, permission_classes , parser_classes
 from rest_framework.permissions import AllowAny
@@ -26,7 +26,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from rest_framework.generics import ListAPIView , RetrieveAPIView , RetrieveUpdateAPIView , DestroyAPIView , ListCreateAPIView
+from rest_framework.generics import ListAPIView , RetrieveAPIView , RetrieveUpdateAPIView , DestroyAPIView , ListCreateAPIView , UpdateAPIView
 
 from django.contrib.auth.hashers import make_password  # Import make_password
 
@@ -100,7 +100,7 @@ class PlaylistView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Playlist.objects.filter(user=self.request.user)
+        return Playlist.objects.filter(status=True,user=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -122,6 +122,13 @@ class PlaylistDetailView(RetrieveAPIView):
     queryset = Playlist.objects.all()
     serializer_class = PlaylistDetailSerializer
     permission_classes = [IsAuthenticated]
+
+
+class PlaylistStatusUpdateView(UpdateAPIView):
+    queryset = Playlist.objects.all()
+    serializer_class = PlaylistStatusSerializer
+    permission_classes = [IsAuthenticated]
+
 
 class AddTrackToPlaylistView(APIView):
     permission_classes = [IsAuthenticated]
